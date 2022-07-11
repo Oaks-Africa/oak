@@ -2,6 +2,8 @@
   "$schema": "./node_modules/nx/schemas/workspace-schema.json",
   "version": 2,
   "projects": {
+    "auth": "apps/auth",
+    "auth-e2e": "apps/auth-e2e",
     "auth-service": "apps/auth-service"
   }
 }
