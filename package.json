@@ -10,6 +10,7 @@
   "private": true,
   "devDependencies": {
     "@nrwl/cli": "14.4.2",
+    "@nrwl/nest": "^14.4.2",
     "@nrwl/nx-cloud": "latest",
     "@nrwl/workspace": "14.4.2",
     "husky": "^8.0.1",
