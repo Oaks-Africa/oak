@@ -1,14 +1,17 @@
-import {CacheModule, Module} from '@nestjs/common';
-import {GraphQLModule} from '@nestjs/graphql';
-import {ApolloDriver, ApolloDriverConfig} from '@nestjs/apollo';
-import type {ClientOpts} from 'redis';
+import { CacheModule, Module } from '@nestjs/common';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { BullModule } from '@nestjs/bull';
+
+import type { ClientOpts } from 'redis';
 import * as redisStore from 'cache-manager-redis-store';
 
-import {AppController} from './app.controller';
-import {AppService} from './app.service';
-import {environment} from "../environments/environment";
-import {BullModule} from "@nestjs/bull";
-import {TestConsumer} from "./test.consumer";
+import { environment } from '../environments/environment';
+
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { TestConsumer } from './test.consumer';
 
 @Module({
   imports: [
@@ -39,9 +42,14 @@ import {TestConsumer} from "./test.consumer";
     BullModule.registerQueue({
       name: 'test',
     }),
+    TypeOrmModule.forRoot({
+      url: environment.database.url,
+      autoLoadEntities: true,
+      type: 'mongodb',
+      useUnifiedTopology: true,
+    }),
   ],
   controllers: [AppController],
   providers: [AppService, TestConsumer],
 })
-export class AppModule {
-}
+export class AppModule {}

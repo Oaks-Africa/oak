@@ -77,14 +77,17 @@
     "@nestjs/core": "^8.0.0",
     "@nestjs/graphql": "^10.0.18",
     "@nestjs/platform-express": "^8.0.0",
+    "@nestjs/typeorm": "^9.0.0",
     "apollo-server-express": "^3.10.0",
     "bull": "^4.8.4",
     "cache-manager": "^4.1.0",
     "cache-manager-redis-store": "^2.0.0",
     "graphql": "^16.5.0",
+    "mongodb": "^3.7.3",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.0.0",
     "tslib": "^2.3.0",
+    "typeorm": "^0.3.7",
     "zone.js": "~0.11.4"
   }
 }

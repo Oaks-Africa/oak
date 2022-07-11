@@ -5,11 +5,13 @@ export const environment = {
     name: process.env.AUTH_APP_NAME,
   },
   database: {
+    type: process.env.AUTH_DATABASE_TYPE,
     host: process.env.AUTH_DATABASE_HOST,
-    port: parseInt(process.env.AUTH_DATABASE_PORT, 10) || 5432,
-    name: process.env.AUTH_DATABASE_NAME,
+    port: parseInt(process.env.AUTH_DATABASE_PORT, 10),
+    database: process.env.AUTH_DATABASE_NAME,
     username: process.env.AUTH_DATABASE_USERNAME,
-    password: process.env.AUTH_DATABASE_PASSWORD
+    password: process.env.AUTH_DATABASE_PASSWORD,
+    url: process.env.AUTH_DATABASE_URL,
   },
   cache: {
     host: process.env.AUTH_CACHE_HOST,
