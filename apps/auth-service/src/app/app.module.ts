@@ -1,12 +1,14 @@
 import {CacheModule, Module} from '@nestjs/common';
 import {GraphQLModule} from '@nestjs/graphql';
 import {ApolloDriver, ApolloDriverConfig} from '@nestjs/apollo';
-import type { ClientOpts } from 'redis';
+import type {ClientOpts} from 'redis';
 import * as redisStore from 'cache-manager-redis-store';
 
 import {AppController} from './app.controller';
 import {AppService} from './app.service';
 import {environment} from "../environments/environment";
+import {BullModule} from "@nestjs/bull";
+import {TestConsumer} from "./test.consumer";
 
 @Module({
   imports: [
@@ -24,11 +26,22 @@ import {environment} from "../environments/environment";
       port: environment.cache.port,
       auth_pass: environment.cache.password,
       db: environment.cache.db,
-    })
-
-],
+    }),
+    BullModule.forRoot({
+      prefix: environment.queue.prefix,
+      redis: {
+        host: environment.queue.host,
+        port: environment.queue.port,
+        password: environment.queue.password,
+        db: environment.queue.db,
+      },
+    }),
+    BullModule.registerQueue({
+      name: 'test',
+    }),
+  ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, TestConsumer],
 })
 export class AppModule {
 }

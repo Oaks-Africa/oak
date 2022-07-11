@@ -13,16 +13,17 @@ export const environment = {
   },
   cache: {
     host: process.env.AUTH_CACHE_HOST,
-    port: process.env.AUTH_CACHE_PORT,
-    username: process.env.AUTH_CACHE_PASSWORD,
+    port: parseInt(process.env.AUTH_CACHE_PORT, 10),
+    username: process.env.AUTH_CACHE_USERNAME,
     password: process.env.AUTH_CACHE_PASSWORD,
-    db: process.env.AUTH_CACHE_DB,
+    db: parseInt(process.env.AUTH_CACHE_DB, 10),
   },
   queue: {
     host: process.env.AUTH_QUEUE_HOST,
-    port: process.env.AUTH_QUEUE_PORT,
-    username: process.env.AUTH_QUEUE_PASSWORD,
+    port: parseInt(process.env.AUTH_QUEUE_PORT, 10),
+    username: process.env.AUTH_QUEUE_USERNAME,
     password: process.env.AUTH_QUEUE_PASSWORD,
-    db: process.env.AUTH_QUEUE_DB,
+    db: parseInt(process.env.AUTH_QUEUE_DB, 10),
+    prefix: process.env.AUTH_QUEUE_PREFIX,
   },
 };
