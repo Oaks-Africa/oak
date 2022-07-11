@@ -1,0 +1,23 @@
+{
+  "sourceRoot": "libs/shared/data-access/phone-number-verification/src",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "libs/shared/data-access/phone-number-verification/**/*.ts"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/shared/data-access/phone-number-verification"],
+      "options": {
+        "jestConfig": "libs/shared/data-access/phone-number-verification/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}
