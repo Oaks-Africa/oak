@@ -5,6 +5,7 @@
     "auth": "apps/auth",
     "auth-e2e": "apps/auth-e2e",
     "auth-service": "apps/auth-service",
+    "notifications-service": "apps/notifications-service",
     "shared-data-access-arkesel": "libs/shared/data-access/arkesel",
     "shared-data-access-phone-number-verification": "libs/shared/data-access/phone-number-verification"
   }
