@@ -2,15 +2,15 @@ syntax = "proto3";
 
 package auth;
 
-service AuthService {
-  rpc ValidateJwt (AuthJwt) returns (User) {}
+service AuthController {
+  rpc ValidateJwt (AuthJwt) returns (AuthUser) {}
 }
 
 message AuthJwt {
   string jwt = 1;
 }
 
-message User {
-  int32 id = 1;
+message AuthUser {
+  string id = 1;
   string name = 2;
 }
