@@ -12,6 +12,9 @@ import { environment } from '../environments/environment';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TestConsumer } from './test.consumer';
+import { AuthModule } from './auth/auth.module';
+import { MauthModule } from './mauth/mauth.module';
+import { EventEmitterModule } from "@nestjs/event-emitter";
 
 @Module({
   imports: [
@@ -48,6 +51,9 @@ import { TestConsumer } from './test.consumer';
       type: 'mongodb',
       useUnifiedTopology: true,
     }),
+    EventEmitterModule.forRoot(),
+    AuthModule,
+    MauthModule,
   ],
   controllers: [AppController],
   providers: [AppService, TestConsumer],
