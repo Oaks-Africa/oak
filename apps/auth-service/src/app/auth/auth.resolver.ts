@@ -14,7 +14,7 @@ export class AuthResolver {
   }
 
   @Mutation(() => RegisteredOutput)
-  createAuth(@Args("registerInput") registerInput: RegisterInput) {
+  register(@Args("registerInput") registerInput: RegisterInput) {
     return this.authService.register(registerInput);
   }
 

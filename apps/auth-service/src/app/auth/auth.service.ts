@@ -16,7 +16,7 @@ import { JwtPayload } from "./interfaces/jwt-payload.interface";
 import { RegisterInput } from "./dto/register.input";
 import { UpdateAuthInput } from "./dto/update-auth.input";
 import { RegisteredOutput } from "./dto/registered.output";
-
+import { environment } from "../../environments/environment";
 
 @Injectable()
 export class AuthService {
@@ -31,7 +31,8 @@ export class AuthService {
     try {
       let user = this.userRepository.create({
         email: registerInput.email,
-        password: registerInput.password
+        password: registerInput.password,
+        lastLogin: new Date()
       });
 
       user = await this.userRepository.save(user);
@@ -48,6 +49,7 @@ export class AuthService {
         }
       };
     } catch (e) {
+      console.log("hiii", e);
       throw new UnauthorizedException("Failed to register");
     }
   }

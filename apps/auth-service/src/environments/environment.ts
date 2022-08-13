@@ -31,7 +31,7 @@ export const environment = {
     prefix: process.env.AUTH_QUEUE_PREFIX
   },
   jwt: {
-    secret: process.env.AUTH_JWT_SEFCRET,
+    secret: process.env.AUTH_JWT_SECRET,
     ignoreExpiration: Boolean(process.env.AUTH_JWT_IGNORE_EXPIRATION),
     signOptions: {
       expiresIn: process.env.AUTH_JWT_SIGN_OPTIONS_EXPIRES_IN

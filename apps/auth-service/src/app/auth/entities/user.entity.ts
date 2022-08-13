@@ -1,34 +1,37 @@
-import { ObjectType, Field, Int } from "@nestjs/graphql";
+import { ObjectType, Field, Int, ID } from "@nestjs/graphql";
 
 import {
   BeforeInsert,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
+  Entity,
   ObjectID,
   ObjectIdColumn,
   UpdateDateColumn
 } from "typeorm";
 
 import * as bcrypt from "bcrypt";
+import { Exclude } from "class-transformer";
 
 import { Profile } from "./profile.entity";
 
-
 @ObjectType()
+@Entity()
 export class User {
-  @Field(() => String, { description: "User ID" })
+  @Field(() => ID, { description: "User ID" })
   @ObjectIdColumn()
   id: ObjectID;
 
   @Field(() => String, { description: "Email address used for authentication" })
-  @Column()
+  @Column({ unique: true })
   email?: string;
 
   @Column()
+  @Exclude()
   password: string;
 
-  @Field(() => String, { description: "The last login date of the user" })
+  @Field(() => Date, { description: "The last login date of the user" })
   @Column()
   lastLogin: Date;
 
@@ -40,11 +43,11 @@ export class User {
   @Column((type) => Profile)
   profile?: Profile;
 
-  @Field(() => String, { description: "Date user was created" })
+  @Field(() => Date, { description: "Date user was created" })
   @CreateDateColumn()
   createdAt: Date;
 
-  @Field(() => String, { description: "Date user was updated" })
+  @Field(() => Date, { description: "Date user was updated" })
   @UpdateDateColumn()
   updatedAt: Date;
 

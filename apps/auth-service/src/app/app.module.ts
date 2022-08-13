@@ -18,11 +18,11 @@ import { EventEmitterModule } from "@nestjs/event-emitter";
 
 @Module({
   imports: [
-    // GraphQLModule.forRoot<ApolloDriverConfig>({
-    //   driver: ApolloDriver,
-    //   // autoSchemaFile: true,
-    //   // sortSchema: true,
-    // }),
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      autoSchemaFile: true,
+      sortSchema: true,
+    }),
     CacheModule.register<ClientOpts>({
       isGlobal: true,
       store: redisStore,

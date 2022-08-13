@@ -16,16 +16,16 @@ export class AuthRegisteredListener {
   @OnEvent(Events.AUTH_REGISTERED, { async: true })
   sendWelcomeEmail(event: AuthRegisteredEvent) {
     // handle and process "OrderCreatedEvent" event
-    this.logger.log('SEND WELCOME EMAIL', event);
+    this.logger.log('SEND WELCOME EMAIL', JSON.stringify(event));
   }
 
   @OnEvent(Events.AUTH_REGISTERED, { async: true })
   sendVerificationEmail(event: AuthRegisteredEvent) {
-    this.logger.log('SEND VERIFICATION EMAIL', event);
+    this.logger.log('SEND VERIFICATION EMAIL', JSON.stringify(event));
   }
 
   @OnEvent(Events.AUTH_REGISTERED, { async: true })
   sendVerificationOtp(event: AuthRegisteredEvent) {
-    this.logger.log('SEND VERIFICATION OTP', event);
+    this.logger.log('SEND VERIFICATION OTP', JSON.stringify(event));
   }
 }
