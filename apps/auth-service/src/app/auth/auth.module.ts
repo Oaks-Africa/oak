@@ -8,11 +8,8 @@ import { User } from './entities/user.entity';
 
 import { AuthService } from './auth.service';
 
-import { AuthResolver } from './auth.resolver';
 
 import { AuthController } from './auth.controller';
-
-import { AuthRegisteredListener } from './listeners/auth-registered.listener';
 
 @Module({
   imports: [
@@ -22,7 +19,7 @@ import { AuthRegisteredListener } from './listeners/auth-registered.listener';
       signOptions: { expiresIn: environment.jwt.signOptions.expiresIn },
     }),
   ],
-  providers: [AuthResolver, AuthService, AuthRegisteredListener],
+  providers: [AuthService],
   controllers: [AuthController],
 })
 export class AuthModule {}

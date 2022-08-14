@@ -3,8 +3,7 @@ export const environment = {
   app: {
     port: parseInt(process.env.AUTH_APP_PORT, 10) || 3001,
     name: process.env.AUTH_APP_NAME,
-    grpcPort: parseInt(process.env.AUTH_GRPC_APP_PORT, 10) || 3002,
-    domain: process.env.AUTH_DOMAIN,
+    domain: process.env.AUTH_APP_DOMAIN
   },
   database: {
     type: process.env.AUTH_DATABASE_TYPE,

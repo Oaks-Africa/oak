@@ -71,6 +71,7 @@
     "@angular/platform-browser": "14.1.1",
     "@angular/platform-browser-dynamic": "14.1.1",
     "@angular/router": "14.1.1",
+    "@golevelup/nestjs-rabbitmq": "^3.2.0",
     "@grpc/grpc-js": "^1.6.7",
     "@grpc/proto-loader": "^0.6.13",
     "@nestjs/apollo": "^10.0.17",

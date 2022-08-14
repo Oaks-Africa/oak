@@ -3,40 +3,38 @@
  * This is only a minimal backend to get started.
  */
 
-import { Logger, ValidationPipe } from "@nestjs/common";
-import { NestFactory } from "@nestjs/core";
-import { MicroserviceOptions, Transport } from "@nestjs/microservices";
-import { join } from "path";
+import { Logger, ValidationPipe } from '@nestjs/common';
+import { NestFactory } from '@nestjs/core';
+import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
-import { AppModule } from "./app/app.module";
-import { environment } from "./environments/environment";
+import { join } from 'path';
+
+import { environment } from './environments/environment';
+
+import { AppModule } from './app/app.module';
 
 async function bootstrap() {
-  const grpcPort = environment.app.grpcPort;
+  const port = environment.app.port;
   const domain = environment.app.domain;
+  const appName = environment.app.name;
 
-  const microservice = await NestFactory.createMicroservice<MicroserviceOptions>(AppModule, {
-    transport: Transport.GRPC,
-    options: {
-      package: "auth",
-      protoPath: join(__dirname, "assets/protos/auth.proto"),
-      url: `${domain}:${grpcPort}`
+  const app = await NestFactory.createMicroservice<MicroserviceOptions>(
+    AppModule,
+    {
+      transport: Transport.GRPC,
+      options: {
+        package: 'auth',
+        protoPath: join(__dirname, 'assets/protos/auth.proto'),
+        url: `${domain}:${port}`,
+      },
     }
-  });
-  await microservice.listen();
-  Logger.log(
-    `🚀 Microservice Application is running on: ${domain}:${grpcPort}`
   );
 
-  const app = await NestFactory.create(AppModule);
-  const globalPrefix = "api";
-  app.setGlobalPrefix(globalPrefix);
   app.useGlobalPipes(new ValidationPipe());
 
-  const port = environment.app.port;
-  await app.listen(port);
+  await app.listen();
   Logger.log(
-    `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`
+    `🚀 ${appName} Microservice Application is running on: ${domain}:${port}`
   );
 }
 

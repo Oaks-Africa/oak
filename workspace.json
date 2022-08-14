@@ -7,6 +7,7 @@
     "auth-service": "apps/auth-service",
     "notifications-service": "apps/notifications-service",
     "shared-data-access-arkesel": "libs/shared/data-access/arkesel",
-    "shared-data-access-phone-number-verification": "libs/shared/data-access/phone-number-verification"
+    "shared-data-access-phone-number-verification": "libs/shared/data-access/phone-number-verification",
+    "users-service": "apps/users-service"
   }
 }
