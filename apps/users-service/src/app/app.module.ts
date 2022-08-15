@@ -8,6 +8,7 @@ import { BullModule } from '@nestjs/bull';
 import type { ClientOpts } from 'redis';
 import * as redisStore from 'cache-manager-redis-store';
 import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
+import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
 
 import { environment } from '../environments/environment';
 
@@ -55,6 +56,11 @@ import { AppService } from './app.service';
       useUnifiedTopology: true,
     }),
     EventEmitterModule.forRoot(),
+    RabbitMQModule.forRoot(RabbitMQModule, {
+      exchanges: [environment.bus.rabbitmq.exchanges.notifications],
+      uri: environment.bus.rabbitmq.url,
+      connectionInitOptions: { wait: false },
+    }),
     AuthModule,
   ],
   controllers: [AppController],

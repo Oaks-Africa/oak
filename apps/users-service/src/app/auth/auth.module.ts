@@ -4,6 +4,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 
 import { join } from 'path';
+import { RabbitMQModule } from "@golevelup/nestjs-rabbitmq";
 
 import { environment } from '../../environments/environment';
 
@@ -17,6 +18,11 @@ import { AuthRegisteredListener } from './listeners/auth-registered.listener';
 
 @Module({
   imports: [
+    RabbitMQModule.forRoot(RabbitMQModule, {
+      exchanges: [environment.bus.rabbitmq.exchanges.notifications],
+      uri: environment.bus.rabbitmq.url,
+      connectionInitOptions: { wait: false },
+    }),
     TypeOrmModule.forFeature([User]),
     JwtModule.register({
       secret: environment.jwt.secret,
