@@ -69,5 +69,5 @@ jobs:
             sudo supervisorctl start oaks.services.notifications
             sudo supervisorctl start oaks.services.users
             sudo supervisorctl status oaks.gateways.users
-            sudo tail -n 30 /var/log/oaks/oaks.gateways.users.out.log
+            sudo tail -n 30 /var/log/oaks/gateways.users.out.log
             echo 'Deployment successful to server!'
