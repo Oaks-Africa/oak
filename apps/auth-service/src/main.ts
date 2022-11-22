@@ -3,15 +3,17 @@
  * This is only a minimal backend to get started.
  */
 
-import { Logger, ValidationPipe } from '@nestjs/common';
-import { NestFactory } from '@nestjs/core';
-import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+import { Logger, ValidationPipe } from "@nestjs/common";
+import { NestFactory } from "@nestjs/core";
+import { MicroserviceOptions, Transport } from "@nestjs/microservices";
 
-import { join } from 'path';
+import { join } from "path";
 
-import { environment } from './environments/environment';
+import { useContainer } from "class-validator";
 
-import { AppModule } from './app/app.module';
+import { environment } from "./environments/environment";
+
+import { AppModule } from "./app/app.module";
 
 async function bootstrap() {
   const port = environment.app.port;
@@ -23,14 +25,15 @@ async function bootstrap() {
     {
       transport: Transport.GRPC,
       options: {
-        package: 'auth',
-        protoPath: join(__dirname, 'assets/protos/auth.proto'),
-        url: `${domain}:${port}`,
-      },
+        package: "auth",
+        protoPath: join(__dirname, "assets/protos/auth.proto"),
+        url: `${domain}:${port}`
+      }
     }
   );
 
   app.useGlobalPipes(new ValidationPipe());
+  useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
   await app.listen();
   Logger.log(

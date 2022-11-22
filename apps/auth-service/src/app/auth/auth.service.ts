@@ -1,6 +1,7 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { JwtService } from '@nestjs/jwt';
+import { RpcException } from '@nestjs/microservices';
 
 import { ObjectID, Repository } from 'typeorm';
 
@@ -15,10 +16,14 @@ import { JwtValidatedDto } from './dtos/jwt-validated.dto';
 
 @Injectable()
 export class AuthService {
+  private readonly logger: Logger;
+
   constructor(
     private readonly jwtService: JwtService,
     @InjectRepository(User) private readonly userRepository: Repository<User>
-  ) {}
+  ) {
+    this.logger = new Logger(AuthService.name);
+  }
 
   async register(registerDto: RegisterDto): Promise<RegisteredDto> {
     try {
@@ -38,7 +43,8 @@ export class AuthService {
         },
       };
     } catch (e) {
-      throw new UnauthorizedException('Failed to register');
+      this.logger.error('REGISTER', e);
+      throw new RpcException('Failed to register');
     }
   }
 
@@ -50,7 +56,19 @@ export class AuthService {
         },
       });
     } catch (error) {
-      throw new UnauthorizedException();
+      throw new RpcException('Failed to find user by id');
+    }
+  }
+
+  async findUserByEmail(email: string) {
+    try {
+      return await this.userRepository.findOne({
+        where: {
+          email,
+        },
+      });
+    } catch (error) {
+      throw new RpcException('Failed to find user by email');
     }
   }
 
@@ -69,7 +87,7 @@ export class AuthService {
         },
       };
     } catch (error) {
-      throw new UnauthorizedException();
+      throw new RpcException('Failed to validate jwt');
     }
   }
 

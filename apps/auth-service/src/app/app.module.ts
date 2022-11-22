@@ -1,12 +1,14 @@
-import { CacheModule, Module } from "@nestjs/common";
-import { TypeOrmModule } from "@nestjs/typeorm";
+import { APP_FILTER } from '@nestjs/core';
+import { CacheModule, Module } from '@nestjs/common';
+import { RpcException } from '@nestjs/microservices';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
-import type { ClientOpts } from "redis";
-import * as redisStore from "cache-manager-redis-store";
+import type { ClientOpts } from 'redis';
+import * as redisStore from 'cache-manager-redis-store';
 
-import { environment } from "../environments/environment";
+import { environment } from '../environments/environment';
 
-import { AuthModule } from "./auth/auth.module";
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -18,18 +20,22 @@ import { AuthModule } from "./auth/auth.module";
       host: environment.cache.host,
       port: environment.cache.port,
       auth_pass: environment.cache.password,
-      db: environment.cache.db
+      db: environment.cache.db,
     }),
     TypeOrmModule.forRoot({
       url: environment.database.url,
       autoLoadEntities: true,
-      type: "mongodb",
-      useUnifiedTopology: true
+      type: 'mongodb',
+      useUnifiedTopology: true,
     }),
-    AuthModule
+    AuthModule,
   ],
   controllers: [],
-  providers: []
+  providers: [
+    {
+      provide: APP_FILTER,
+      useClass: RpcException,
+    },
+  ],
 })
-export class AppModule {
-}
+export class AppModule {}

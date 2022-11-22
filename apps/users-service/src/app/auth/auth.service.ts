@@ -67,7 +67,7 @@ export class AuthService implements OnModuleInit {
         auth: response.auth,
       };
     } catch (e) {
-      console.log('hiii', e);
+      this.logger.error('hiii', e.message);
       throw new UnauthorizedException('Failed to register');
     }
   }
