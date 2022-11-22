@@ -1,0 +1,73 @@
+name: Production CI
+
+on:
+  push:
+    branches: [ 'main' ]
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: '18.x' # set this to the node version to use
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: npm install, build, and test
+        run: |
+          npm install
+          npx nx run gateways.users:build:production
+          npx nx run services.billings:build:production
+          npx nx run services.bookings:build:production
+          npx nx run services.controls:build:production
+          npx nx run services.notifications:build:production
+          npx nx run services.users:build:production
+  deploy:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT }}
+          #         key: ${{ secrets.SSHKEY }}
+          script: |
+            sudo supervisorctl stop oaks.gateways.users
+            sudo supervisorctl stop oaks.services.billings
+            sudo supervisorctl stop oaks.services.bookings
+            sudo supervisorctl stop oaks.services.controls
+            sudo supervisorctl stop oaks.services.notifications
+            sudo supervisorctl stop oaks.services.users
+            cd /home/dev/webapps/oak
+            eval `ssh-agent`
+            ssh-add ~/.ssh/github_id_rsa
+            git pull origin main
+            /home/dev/.nvm/versions/node/v18.12.1/bin/npx nx run gateways.users:build:production
+            /home/dev/.nvm/versions/node/v18.12.1/bin/npx nx run services.billings:build:production
+            /home/dev/.nvm/versions/node/v18.12.1/bin/npx nx run services.bookings:build:production
+            /home/dev/.nvm/versions/node/v18.12.1/bin/npx nx run services.controls:build:production
+            /home/dev/.nvm/versions/node/v18.12.1/bin/npx nx run services.notifications:build:production
+            /home/dev/.nvm/versions/node/v18.12.1/bin/npx nx run services.users:build:production
+            sudo supervisorctl start oaks.gateways.users
+            sudo supervisorctl start oaks.services.billings
+            sudo supervisorctl start oaks.services.bookings
+            sudo supervisorctl start oaks.services.controls
+            sudo supervisorctl start oaks.services.notifications
+            sudo supervisorctl start oaks.services.users
+            sudo supervisorctl status oaks.gateways.users
+            sudo tail -n 30 /var/log/oak/oaks.gateways.users.out.log
+            echo 'Deployment successful to server!'
