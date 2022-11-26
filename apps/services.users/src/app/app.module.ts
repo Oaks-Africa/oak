@@ -1,11 +1,14 @@
 import { Module } from '@nestjs/common';
 
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { GlobalModule } from './@common/modules/global.module';
+import { HealthModule } from './health/health.module';
+
+import { AppService } from './app.service';
+
+import { AppController } from './app.controller';
 
 @Module({
-  imports: [GlobalModule],
+  imports: [GlobalModule, HealthModule],
   controllers: [AppController],
   providers: [AppService],
 })

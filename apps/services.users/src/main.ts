@@ -1,5 +1,8 @@
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+
+import { join } from 'path';
 
 import { environment } from './environments/environment';
 
@@ -12,6 +15,18 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalFilters(new AllExceptionsFilter());
+
+  app.connectMicroservice<MicroserviceOptions>(
+    {
+      transport: Transport.GRPC,
+      options: {
+        package: environment.app.package,
+        protoPath: join(__dirname, 'assets/proto/users.proto'),
+        url: environment.app.url,
+      },
+    },
+    { inheritAppConfig: true }
+  );
 
   await app.startAllMicroservices();
 

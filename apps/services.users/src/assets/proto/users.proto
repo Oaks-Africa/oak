@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package users;
+
+service UsersService {
+  rpc Health(HealthReq) returns (HealthRes) {}
+}
+
+message HealthReq {}
+
+message HealthRes {
+  int32 status = 1;
+}

@@ -4,6 +4,11 @@ export const environment = {
     port: parseInt(process.env.SERVICES_USERS_APP_PORT, 10),
     name: process.env.SERVICES_USERS_APP_NAME,
     domain: process.env.SERVICES_USERS_APP_DOMAIN,
+    url: `${process.env.SERVICES_USERS_APP_DOMAIN}:${parseInt(
+      process.env.SERVICES_USERS_APP_PORT,
+      10
+    )}`,
+    package: 'users',
     httpPort: parseInt(process.env.SERVICES_USERS_APP_HTTP_PORT, 10),
   },
   database: {

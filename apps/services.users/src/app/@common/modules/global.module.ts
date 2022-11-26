@@ -9,7 +9,6 @@ import { environment } from '../../../environments/environment';
 import { TransformInterceptor } from '../interceptors/transform.interceptor';
 import { Example } from '../../example.entity';
 
-console.log(environment.database)
 @Global()
 @Module({
   imports: [
