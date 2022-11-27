@@ -3,11 +3,15 @@ import { Global, Module } from '@nestjs/common';
 
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { TemporalModule } from 'nestjs-temporal';
+import { Connection } from '@temporalio/client';
 
 import { environment } from '../../../environments/environment';
 
-import { TransformInterceptor } from '../interceptors/transform.interceptor';
 import { Example } from '../../example.entity';
+
+import { TokenGenerationService } from '../services/token-generation.service';
+
+import { TransformInterceptor } from '../interceptors/transform.interceptor';
 
 @Global()
 @Module({
@@ -23,10 +27,17 @@ import { Example } from '../../example.entity';
         address: environment.temporal.address,
       }
     ),
-    TemporalModule.registerClient({
-      name: environment.temporal.worker.name,
-      connection: {
-        address: environment.temporal.address,
+    TemporalModule.registerClientAsync({
+      useFactory: async () => {
+        const connection = await Connection.connect({
+          address: environment.temporal.address,
+        });
+
+        return {
+          name: environment.temporal.worker.name,
+          namespace: environment.temporal.namespace,
+          connection,
+        };
       },
     }),
   ],
@@ -35,6 +46,8 @@ import { Example } from '../../example.entity';
       provide: APP_INTERCEPTOR,
       useClass: TransformInterceptor,
     },
+    TokenGenerationService,
   ],
+  exports: [TokenGenerationService],
 })
 export class GlobalModule {}

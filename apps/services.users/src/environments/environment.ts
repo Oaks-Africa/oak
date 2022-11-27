@@ -1,3 +1,5 @@
+import { join } from 'path';
+
 export const environment = {
   production: false,
   app: {
@@ -22,7 +24,10 @@ export const environment = {
     address: process.env.TEMPORAL_ADDRESS,
     taskQueue: process.env.TEMPORAL_TASK_QUEUE,
     namespace: process.env.TEMPORAL_NAMESPACE,
-    workflowsPath: process.env.TEMPORAL_WORKFLOWS_PATH,
+    workflowsPath: join(
+      __dirname?.replace('dist', ''),
+      process.env.TEMPORAL_WORKFLOWS_PATH
+    ),
     worker: {
       name: process.env.TEMPORAL_WORKER_NAME,
     },

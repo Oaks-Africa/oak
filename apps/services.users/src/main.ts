@@ -9,12 +9,14 @@ import { environment } from './environments/environment';
 import { AppModule } from './app/app.module';
 
 import { AllExceptionsFilter } from './app/@common/filters/all-exceptions.filter';
+import { useContainer } from 'class-validator';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalFilters(new AllExceptionsFilter());
+  useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
   app.connectMicroservice<MicroserviceOptions>(
     {
