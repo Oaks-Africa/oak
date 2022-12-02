@@ -17,12 +17,13 @@ import { User } from './entities/user.entity';
 
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { FindByEmailDto } from './dto/find-by-email.dto';
 
 import { TokenGenerationService } from '../@common/services/token-generation.service';
 
 @Injectable()
 export class UsersService {
-  readonly logger: Logger;
+  private readonly logger: Logger;
 
   constructor(
     @InjectTemporalClient() private readonly temporalClient: WorkflowClient,
@@ -37,12 +38,17 @@ export class UsersService {
   @UseRequestContext()
   async create(createUserDto: CreateUserDto) {
     try {
-      const user = this.usersRepository.create(createUserDto);
+      const user = this.usersRepository.create({
+        ...createUserDto,
+        profile: {
+          name: createUserDto.name,
+        },
+      });
       await this.usersRepository.persistAndFlush(user);
 
       await this.initiateUserCreatedWorkflow(user);
 
-      return user;
+      return { requestData: createUserDto, ...user };
     } catch (e) {
       this.logger.error('EXCEPTION CAUGHT: ', e);
 
@@ -52,6 +58,11 @@ export class UsersService {
 
       throw new BadRequestException('failed to create user');
     }
+  }
+
+  @UseRequestContext()
+  async findByEmail({ email }: FindByEmailDto) {
+    return await this.usersRepository.findOne({ email });
   }
 
   findAll() {

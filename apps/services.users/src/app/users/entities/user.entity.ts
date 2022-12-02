@@ -1,8 +1,16 @@
-import { BeforeCreate, Entity, Property, Unique } from '@mikro-orm/core';
+import {
+  BeforeCreate,
+  Embedded,
+  Entity,
+  Property,
+  Unique,
+} from '@mikro-orm/core';
 
+import { Exclude } from 'class-transformer';
 import * as bcrypt from 'bcrypt';
 
 import { BaseEntity } from '../../@common/entities/base.entity';
+import { Profile } from './profile.entity';
 
 @Entity()
 export class User extends BaseEntity {
@@ -10,8 +18,15 @@ export class User extends BaseEntity {
   @Unique()
   email!: string;
 
+  @Property()
+  viaGoogle!: boolean;
+
   @Property({ nullable: true })
+  @Exclude()
   password?: string;
+
+  @Embedded(() => Profile, { object: true })
+  profile: Profile;
 
   @BeforeCreate()
   async hashPassword() {

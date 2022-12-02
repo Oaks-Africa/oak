@@ -3,13 +3,13 @@ import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
 import { join } from 'path';
+import { useContainer } from 'class-validator';
 
 import { environment } from './environments/environment';
 
 import { AppModule } from './app/app.module';
 
 import { AllExceptionsFilter } from './app/@common/filters/all-exceptions.filter';
-import { useContainer } from 'class-validator';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
