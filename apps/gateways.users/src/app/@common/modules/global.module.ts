@@ -23,7 +23,7 @@ import {
   USERS_PACKAGE_NAME,
   USERS_SERVICE_NAME,
 } from '../../../../../services.users/src/assets/proto/users';
-console.log(environment.app.allowedDomains)
+
 const usersServiceProvider = {
   provide: USERS_SERVICE_NAME,
   useFactory: () => {
