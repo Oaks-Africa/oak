@@ -35,9 +35,8 @@ async function bootstrap() {
   const httpPort = environment.app.httpPort;
   await app.listen(httpPort);
 
-  const domain = environment.app.domain;
   const appName = environment.app.name;
-  Logger.log(`🚀 ${appName} is running on: ${domain}:${httpPort}`);
+  Logger.log(`🚀 ${appName} is running on: ${environment.app.url}`);
 }
 
 bootstrap();
