@@ -6,6 +6,7 @@ service UsersService {
   rpc Health(HealthReq) returns (HealthRes) {}
 
   rpc CreateUser(CreateUserReq) returns (CreateUserRes) {}
+  rpc FindByEmailAndPassword(FindByEmailAndPasswordReq) returns (FindByEmailAndPasswordRes) {}
 }
 
 message HealthReq {}
@@ -17,7 +18,7 @@ message HealthRes {
 message Name {
   string first = 1;
   string last = 2;
-  string other = 3;
+  optional string other = 3;
 }
 
 message CreateUserReq {
@@ -37,12 +38,38 @@ message UserCreated {
   string email = 3;
   bool viaGoogle = 4;
   Profile profile = 5;
+  string createdAt = 6;
+  string updatedAt = 7;
 }
 
 message CreateUserRes {
   bool success = 1;
   int32 status = 2;
   UserCreated data = 3;
+  string message = 4;
+  string error = 5;
+}
+
+message FindByEmailAndPasswordReq {
+  string email = 1;
+  string password = 2;
+}
+
+message FoundUserByEmailAndPassword {
+  FindByEmailAndPasswordReq requestData = 1;
+  string id = 2;
+  string email = 3;
+  bool viaGoogle = 4;
+  string lastSignIn = 5;
+  Profile profile = 6;
+  string createdAt = 7;
+  string updatedAt = 8;
+}
+
+message FindByEmailAndPasswordRes {
+  bool success = 1;
+  int32 status = 2;
+  FoundUserByEmailAndPassword data = 3;
   string message = 4;
   string error = 5;
 }

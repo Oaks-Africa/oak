@@ -1,8 +1,22 @@
+import { UseGuards } from '@nestjs/common';
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
-import { AuthService } from './auth.service';
+
+import { CurrentUser } from './decorators/current-user.decorator';
+
 import { Auth } from './entities/auth.entity';
+
 import { CreateAuthInput } from './dto/create-auth.input';
 import { UpdateAuthInput } from './dto/update-auth.input';
+import { SignUpViaEmailInput } from './dto/sign-up-via-email.input';
+import { SignInViaEmailInput } from './dto/sign-in-via-email.input';
+import { SignedUpViaEmailOutput } from './dto/signed-up-via-email.output';
+import { SignedInViaEmailOutput } from './dto/signed-in-via-email.output';
+import { UserOutput } from './dto/user.output';
+
+import { AuthService, Fd } from './auth.service';
+
+import { GqlCookieAuthGuard } from '../@common/guards/gql-cookie-auth.guard';
+import { LoginWithCredentialsGuard } from '../@common/guards/login-with-credentials.guard';
 
 @Resolver(() => Auth)
 export class AuthResolver {
@@ -13,12 +27,31 @@ export class AuthResolver {
     return this.authService.create(createAuthInput);
   }
 
+  @Mutation(() => SignedUpViaEmailOutput, { name: 'signUpViaEmail' })
+  signUpViaEmail(
+    @Args('signUpViaEmailInput') signUpViaEmailInput: SignUpViaEmailInput
+  ) {
+    return this.authService.signUpViaEmail(signUpViaEmailInput);
+  }
+
+  @Mutation(() => SignedInViaEmailOutput, { name: 'signInViaEmail' })
+  @UseGuards(new LoginWithCredentialsGuard('signInViaEmailInput'))
+  signInViaEmail(
+    @Args('signInViaEmailInput') signInViaEmailInput: SignInViaEmailInput,
+    @CurrentUser() user: UserOutput
+  ) {
+    return {
+      user,
+    };
+  }
+
   @Query(() => [Auth], { name: 'auth' })
   findAll() {
     return this.authService.findAll();
   }
 
-  @Query(() => Auth, { name: 'auth' })
+  @UseGuards(GqlCookieAuthGuard)
+  @Query(() => Fd, { name: 'authF' })
   findOne(@Args('id', { type: () => Int }) id: number) {
     return this.authService.findOne(id);
   }

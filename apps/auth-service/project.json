@@ -1,4 +1,5 @@
 {
+  "name": "auth-service",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/auth-service/src",
   "projectType": "application",

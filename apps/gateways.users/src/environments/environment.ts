@@ -10,6 +10,10 @@ export const environment = {
       host: process.env.GATEWAYS_USERS_REDIS_CACHE_HOST,
       port: parseInt(process.env.GATEWAYS_USERS_REDIS_CACHE_PORT, 10),
       db: parseInt(process.env.GATEWAYS_USERS_REDIS_CACHE_DB, 10),
+      url: `${process.env.GATEWAYS_USERS_REDIS_CACHE_HOST}:${parseInt(
+        process.env.GATEWAYS_USERS_REDIS_CACHE_PORT,
+        10
+      )}`,
     },
   },
   jwt: {
@@ -18,5 +22,8 @@ export const environment = {
     signOptions: {
       expiresIn: process.env.MAIN_SERVICE_JWT_SIGN_OPTIONS_EXPIRES_IN,
     },
+  },
+  session: {
+    secret: 'djfkdjfkdkf',
   },
 };

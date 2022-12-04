@@ -28,6 +28,9 @@ export class User extends BaseEntity {
   @Embedded(() => Profile, { object: true })
   profile: Profile;
 
+  @Property({ nullable: true })
+  lastSignIn?: Date;
+
   @BeforeCreate()
   async hashPassword() {
     if (this.password) {
@@ -35,5 +38,9 @@ export class User extends BaseEntity {
 
       this.password = await bcrypt.hash(this.password, salt);
     }
+  }
+
+  async validatePassword(password: string): Promise<boolean> {
+    return await bcrypt.compare(password, this.password);
   }
 }

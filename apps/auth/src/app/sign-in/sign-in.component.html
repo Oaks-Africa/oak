@@ -1,1 +1,6 @@
 <p>sign-in works!</p>
+<button (click)="onSignInViaEmail()">Sign in oooo</button>
+
+<p>{{ isLoading$ | async }}</p>
+<p>{{ error$ | async | json }}</p>
+<p>{{ allState$ | async | json }}</p>

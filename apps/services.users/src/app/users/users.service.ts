@@ -3,21 +3,28 @@ import {
   HttpException,
   Injectable,
   Logger,
+  NotFoundException,
 } from '@nestjs/common';
 
 import { InjectTemporalClient } from 'nestjs-temporal';
 import { WorkflowClient } from '@temporalio/client';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/mongodb';
-import { MikroORM, UseRequestContext } from '@mikro-orm/core';
+import { MikroORM, UseRequestContext, wrap } from '@mikro-orm/core';
 
 import { environment } from '../../environments/environment';
+
+import {
+  FoundUserByEmailAndPassword,
+  UserCreated,
+} from '../../assets/proto/users';
 
 import { User } from './entities/user.entity';
 
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { FindByEmailDto } from './dto/find-by-email.dto';
+import { FindByEmailAndPasswordDto } from './dto/find-by-email-and-password.dto';
 
 import { TokenGenerationService } from '../@common/services/token-generation.service';
 
@@ -48,7 +55,13 @@ export class UsersService {
 
       await this.initiateUserCreatedWorkflow(user);
 
-      return { requestData: createUserDto, ...user };
+      return {
+        requestData: createUserDto,
+        ...user,
+        id: user.id,
+        createdAt: user.createdAt.toISOString(),
+        updatedAt: user.updatedAt.toISOString(),
+      } as UserCreated;
     } catch (e) {
       this.logger.error('EXCEPTION CAUGHT: ', e);
 
@@ -63,6 +76,42 @@ export class UsersService {
   @UseRequestContext()
   async findByEmail({ email }: FindByEmailDto) {
     return await this.usersRepository.findOne({ email });
+  }
+
+  @UseRequestContext()
+  async findByEmailAndPassword({ email, password }: FindByEmailAndPasswordDto) {
+    try {
+      const user = await this.usersRepository.findOneOrFail({ email });
+
+      const isValid = await user.validatePassword(password);
+
+      if (!isValid) {
+        throw new NotFoundException('user with email and password not found');
+      }
+
+      wrap(user).assign({
+        lastSignIn: new Date(),
+      });
+
+      await this.usersRepository.flush();
+
+      return {
+        requestData: { email, password },
+        ...user,
+        id: user.id,
+        lastSignIn: user.lastSignIn?.toISOString(),
+        createdAt: user.createdAt.toISOString(),
+        updatedAt: user.updatedAt.toISOString(),
+      } as FoundUserByEmailAndPassword;
+    } catch (e) {
+      this.logger.error('EXCEPTION CAUGHT: ', e);
+
+      if (e instanceof HttpException) {
+        throw e;
+      }
+
+      throw new BadRequestException('failed to retrieve user');
+    }
   }
 
   findAll() {

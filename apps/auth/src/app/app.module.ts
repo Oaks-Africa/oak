@@ -1,14 +1,24 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
+import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
+
+import { environment } from '../environments/environment';
+
+import { AuthDataAccessModule } from '@oak/auth/data-access';
+
 import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
-import { NxWelcomeComponent } from './nx-welcome.component';
 
 @NgModule({
-  declarations: [AppComponent, NxWelcomeComponent],
-  imports: [BrowserModule, AppRoutingModule],
+  declarations: [AppComponent],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    environment.production ? [] : AkitaNgDevtools.forRoot(),
+    AuthDataAccessModule,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
