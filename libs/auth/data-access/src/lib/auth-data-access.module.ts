@@ -10,6 +10,8 @@ import {
 } from 'apollo-angular';
 import { HttpLink } from 'apollo-angular/http';
 
+import { environment } from '../../../../../apps/auth/src/environments/environment';
+
 import { AuthService, AuthQuery, AuthStore } from './state';
 
 const graphqlEndpointsProvider = {
@@ -19,7 +21,7 @@ const graphqlEndpointsProvider = {
       usersGateway: {
         cache: new InMemoryCache(),
         link: httpLink.create({
-          uri: 'http://localhost:2000/graphql',
+          uri: environment.gateways.users.gqlUrl,
         }),
       },
     };

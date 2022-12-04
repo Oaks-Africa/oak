@@ -5,9 +5,12 @@
   "prefix": "oak",
   "targets": {
     "build": {
-      "executor": "@angular-devkit/build-angular:browser",
+      "executor": "@nrwl/angular:webpack-browser",
       "outputs": ["{options.outputPath}"],
       "options": {
+        "customWebpackConfig": {
+          "path": "apps/auth/webpack.config.js"
+        },
         "outputPath": "dist/apps/auth",
         "index": "apps/auth/src/index.html",
         "main": "apps/auth/src/main.ts",
@@ -52,7 +55,7 @@
       "defaultConfiguration": "production"
     },
     "serve": {
-      "executor": "@angular-devkit/build-angular:dev-server",
+      "executor": "@nrwl/angular:webpack-dev-server",
       "configurations": {
         "production": {
           "browserTarget": "auth:build:production"

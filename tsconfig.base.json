@@ -15,13 +15,13 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@oak/auth/data-access": ["libs/auth/data-access/src/index.ts"],
       "@oak/shared/data-access/arkesel": [
         "libs/shared/data-access/arkesel/src/index.ts"
       ],
       "@oak/shared/data-access/phone-number-verification": [
         "libs/shared/data-access/phone-number-verification/src/index.ts"
-      ],
-      "@oak/auth/data-access": ["libs/auth/data-access/src/index.ts"]
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -23,7 +23,7 @@ import {
   USERS_PACKAGE_NAME,
   USERS_SERVICE_NAME,
 } from '../../../../../services.users/src/assets/proto/users';
-
+console.log(environment.app.allowedDomains)
 const usersServiceProvider = {
   provide: USERS_SERVICE_NAME,
   useFactory: () => {
@@ -35,7 +35,7 @@ const usersServiceProvider = {
           __dirname,
           '../../apps/services.users/assets/proto/users.proto'
         ),
-        url: 'localhost:20009',
+        url: environment.services.users.url,
       },
     });
   },
@@ -58,7 +58,7 @@ const usersServiceProvider = {
       debug: false,
       cors: {
         credentials: true,
-        origin: ['http://localhost:4200', 'https://studio.apollographql.com'],
+        origin: [...environment.app.allowedDomains],
       },
       plugins: [
         ApolloServerPluginSchemaReporting(),
