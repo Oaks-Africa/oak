@@ -7,7 +7,7 @@ export const environment = {
   gateways: {
     users: {
       baseUrl: process.env['NX_GATEWAYS_USERS_URL'],
-      gqlUrl: `${process.env['NX_GATEWAYS_USERS_URL']}graphql`,
+      gqlUrl: `${process.env['NX_GATEWAYS_USERS_URL']}/graphql`,
     },
   },
 };
