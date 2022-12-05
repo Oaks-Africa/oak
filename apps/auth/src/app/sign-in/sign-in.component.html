@@ -1,5 +1,6 @@
 <p>sign-in works!</p>
 <button (click)="onSignInViaEmail()">Sign in oooo</button>
+<a [routerLink]="['/sign-up']">Visit sign up</a>
 
 <p>{{ isLoading$ | async }}</p>
 <p>{{ error$ | async | json }}</p>

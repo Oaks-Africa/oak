@@ -17,8 +17,16 @@
         "polyfills": "apps/auth/src/polyfills.ts",
         "tsConfig": "apps/auth/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
-        "assets": ["apps/auth/src/favicon.ico", "apps/auth/src/assets"],
-        "styles": ["apps/auth/src/styles.scss"],
+        "assets": [
+          "apps/auth/src/favicon.ico",
+          "apps/auth/src/assets",
+          {
+            "glob": "**/*",
+            "input": "node_modules/@taiga-ui/icons/src",
+            "output": "apps/auth/src/assets/taiga-ui/icons"
+          }
+        ],
+        "styles": ["apps/auth/src/styles.scss", "apps/auth/src/styles.less"],
         "scripts": []
       },
       "configurations": {

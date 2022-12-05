@@ -4,11 +4,12 @@ import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
 
 import { AuthState, AuthQuery, AuthService } from '@oak/auth/data-access';
+import { RouterLinkWithHref } from "@angular/router";
 
 @Component({
   selector: 'oak-sign-in',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLinkWithHref],
   templateUrl: './sign-in.component.html',
   styleUrls: ['./sign-in.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

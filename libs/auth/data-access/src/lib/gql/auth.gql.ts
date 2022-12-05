@@ -1,4 +1,4 @@
-import { gql } from 'apollo-angular';
+import { gql } from "apollo-angular";
 
 export const SIGN_IN_VIA_EMAIL = gql`
   mutation SignInViaEmail($signInViaEmailInput: SignInViaEmailInput!) {
@@ -13,6 +13,26 @@ export const SIGN_IN_VIA_EMAIL = gql`
           }
         }
         lastSignIn
+        createdAt
+        email
+        updatedAt
+      }
+    }
+  }
+`;
+
+export const SIGN_UP_VIA_EMAIL = gql`
+  mutation SignUpViaEmail($signUpViaEmailInput: SignUpViaEmailInput!) {
+    signUpViaEmail(signUpViaEmailInput: $signUpViaEmailInput) {
+      user {
+        id
+        profile {
+          name {
+            first
+            last
+            other
+          }
+        }
         createdAt
         email
         updatedAt
