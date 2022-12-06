@@ -4,6 +4,7 @@
 <p>{{ allState$ | async | json }}</p>
 <a [routerLink]="['/sign-in']">Visit sign in</a>
 <div class="tui-container">
+  <oaks-sign-up-form></oaks-sign-up-form>
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="tui-row tui-row_sme">
       <div class="tui-col_8">

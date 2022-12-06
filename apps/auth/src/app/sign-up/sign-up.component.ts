@@ -21,7 +21,8 @@ import {
 } from '@taiga-ui/core';
 import { AuthQuery, AuthService, AuthState } from '@oak/auth/data-access';
 import { Observable } from 'rxjs';
-import { RouterLinkWithHref } from "@angular/router";
+import { RouterLinkWithHref } from '@angular/router';
+import { SignUpFormComponent } from './sign-up-form/sign-up-form.component';
 
 interface NameForm {
   first: FormControl<string>;
@@ -49,7 +50,8 @@ interface SignUpForm {
     TuiInputPasswordModule,
     TuiButtonModule,
     TuiHintModule,
-    RouterLinkWithHref
+    RouterLinkWithHref,
+    SignUpFormComponent,
   ],
   templateUrl: './sign-up.component.html',
   styleUrls: ['./sign-up.component.scss'],
