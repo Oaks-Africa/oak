@@ -60,12 +60,7 @@ jobs:
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
             [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
             npm install
-            npx nx run gateways.users:build:production
-            npx nx run services.billings:build:production
-            npx nx run services.bookings:build:production
-            npx nx run services.controls:build:production
-            npx nx run services.notifications:build:production
-            npx nx run services.users:build:production
+            npx nx run-many --target=build --projects=gateways.users,services.billings,services.bookings,services.controls,services.notifications,services.users --parallel=6 -c production
             sudo supervisorctl start oaks.gateways.users
             sudo supervisorctl start oaks.services.billings
             sudo supervisorctl start oaks.services.bookings
