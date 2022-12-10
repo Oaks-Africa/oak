@@ -4,14 +4,14 @@ import { IUserCreatedActivity } from '../activities/user-created.activity';
 
 import { START_TO_CLOSE_TIMEOUT } from '../../@common/constants/workflow.constant';
 
-const { sendWelcomeMail } = proxyActivities<IUserCreatedActivity>({
+import { User } from '../entities/user.entity';
+
+const { emitUserCreatedEvent } = proxyActivities<IUserCreatedActivity>({
   startToCloseTimeout: START_TO_CLOSE_TIMEOUT,
 });
 
-export async function UserCreated(name: string): Promise<string> {
-  const res = await sendWelcomeMail(name);
-  console.log(res, 'HIIII');
+export async function UserCreated(user: User): Promise<void> {
+  await emitUserCreatedEvent(user);
   await sleep(10000);
   console.log('10 sec done');
-  return res;
 }
