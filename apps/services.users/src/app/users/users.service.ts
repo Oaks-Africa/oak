@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   HttpException,
+  Inject,
   Injectable,
   Logger,
   NotFoundException,
@@ -27,12 +28,15 @@ import { FindByEmailDto } from './dto/find-by-email.dto';
 import { FindByEmailAndPasswordDto } from './dto/find-by-email-and-password.dto';
 
 import { TokenGenerationService } from '../@common/services/token-generation.service';
+import { ClientKafka } from '@nestjs/microservices';
+import { lastValueFrom } from 'rxjs';
 
 @Injectable()
 export class UsersService {
   private readonly logger: Logger;
 
   constructor(
+    @Inject('NOTIFICATIONS_SERVICE') private readonly kycClient: ClientKafka,
     @InjectTemporalClient() private readonly temporalClient: WorkflowClient,
     private readonly orm: MikroORM,
     @InjectRepository(User)
@@ -132,11 +136,17 @@ export class UsersService {
 
   async initiateUserCreatedWorkflow(data: User) {
     const handle = await this.temporalClient.start('UserCreated', {
-      args: ['howdy'],
+      args: [data],
       taskQueue: environment.temporal.taskQueue,
       workflowId: this.tokenGenerationService.generateWorkflowId('UserCreated'),
     });
 
     this.logger.log('USER CREATED WORKFLOW HAS STARTED: ', handle.workflowId);
+  }
+
+  async emitUserCreatedEvent(data: User) {
+    return await lastValueFrom(
+      this.kycClient.emit('oaks.users.user.created', data)
+    );
   }
 }

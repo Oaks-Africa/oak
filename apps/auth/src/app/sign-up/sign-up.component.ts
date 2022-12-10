@@ -110,7 +110,7 @@ export class SignUpComponent {
         }),
         last: new FormControl('', {
           nonNullable: true,
-          validators: [Validators.required],
+          validators: [Validators.required],  
         }),
         other: new FormControl('', { nonNullable: false }),
       }),

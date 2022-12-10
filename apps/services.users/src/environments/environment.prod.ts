@@ -1,4 +1,4 @@
-import { join } from "path";
+import { join } from 'path';
 
 export const environment = {
   production: true,
@@ -6,7 +6,10 @@ export const environment = {
     port: parseInt(process.env.SERVICES_USERS_APP_PORT, 10),
     name: process.env.SERVICES_USERS_APP_NAME,
     domain: process.env.SERVICES_USERS_APP_DOMAIN,
-    url: `${process.env.SERVICES_USERS_APP_DOMAIN}:${parseInt(process.env.SERVICES_USERS_APP_PORT, 10)}`,
+    url: `${process.env.SERVICES_USERS_APP_DOMAIN}:${parseInt(
+      process.env.SERVICES_USERS_APP_PORT,
+      10
+    )}`,
     package: 'users',
     httpPort: parseInt(process.env.SERVICES_USERS_APP_HTTP_PORT, 10),
   },
@@ -27,6 +30,15 @@ export const environment = {
     ),
     worker: {
       name: process.env.SERVICES_USERS_TEMPORAL_WORKER_NAME,
+    },
+  },
+  kafka: {
+    clientId: process.env.SERVICES_NOTIFICATIONS_KAFKA_CLIENT_ID,
+    brokers: process.env.KAFKA_BROKERS?.split(','),
+    consumers: {
+      notifications: {
+        id: process.env.KAFKA_CONSUMERS_NOTIFICATIONS_ID,
+      },
     },
   },
 };

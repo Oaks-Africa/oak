@@ -29,4 +29,13 @@ export const environment = {
       name: process.env.SERVICES_USERS_TEMPORAL_WORKER_NAME,
     },
   },
+  kafka: {
+    clientId: process.env.SERVICES_NOTIFICATIONS_KAFKA_CLIENT_ID,
+    brokers: process.env.KAFKA_BROKERS?.split(','),
+    consumers: {
+      notifications: {
+        id: process.env.KAFKA_CONSUMERS_NOTIFICATIONS_ID,
+      },
+    },
+  },
 };
