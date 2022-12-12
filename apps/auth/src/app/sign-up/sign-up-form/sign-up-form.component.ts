@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import {
+  Output,
+  EventEmitter,
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+} from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -47,6 +53,8 @@ interface SignUpForm {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SignUpFormComponent implements OnInit {
+  @Output() submitForm = new EventEmitter<any>();
+
   form!: FormGroup;
 
   constructor() {
@@ -95,5 +103,7 @@ export class SignUpFormComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  onSubmit() {}
+  onSubmit() {
+    this.submitForm.emit(this.form.value);
+  }
 }
