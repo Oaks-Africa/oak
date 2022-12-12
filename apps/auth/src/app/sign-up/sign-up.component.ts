@@ -7,11 +7,14 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { RouterLinkWithHref } from '@angular/router';
 
+import { Observable } from 'rxjs';
 import {
   TuiFieldErrorPipeModule,
   TuiInputModule,
   TuiInputPasswordModule,
+  TuiIslandModule,
 } from '@taiga-ui/kit';
 import {
   TuiAlertService,
@@ -19,9 +22,9 @@ import {
   TuiErrorModule,
   TuiHintModule,
 } from '@taiga-ui/core';
+
 import { AuthQuery, AuthService, AuthState } from '@oak/auth/data-access';
-import { Observable } from 'rxjs';
-import { RouterLinkWithHref } from '@angular/router';
+
 import { SignUpFormComponent } from './sign-up-form/sign-up-form.component';
 
 interface NameForm {
@@ -44,6 +47,7 @@ interface SignUpForm {
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    TuiIslandModule,
     TuiInputModule,
     TuiFieldErrorPipeModule,
     TuiErrorModule,
