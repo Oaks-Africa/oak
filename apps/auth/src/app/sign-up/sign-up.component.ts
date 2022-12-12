@@ -46,4 +46,8 @@ export class SignUpComponent {
   //     .open('User has been created successfully', { label: 'Sign up form' })
   //     .subscribe();
   // }
+
+  onSignUpFormSubmit(data: any) {
+    console.log('SIGN UP PAGE COMPONENT', data);
+  }
 }
