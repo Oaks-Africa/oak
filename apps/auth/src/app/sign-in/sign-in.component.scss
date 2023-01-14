@@ -1,0 +1,15 @@
+.main-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+
+    .tui-row {
+        justify-content: center;
+    }
+}
+
+:host{
+    display: block;
+}
