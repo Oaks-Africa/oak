@@ -4,51 +4,9 @@
         <div class="tui-island__content">
           <div class="tui-col_12">
             <h5 class=" tui-island__title tui-text_h5">Welcome!</h5>
-            <form [formGroup]="form" (ngSubmit)="onSignInViaEmail()">
-                <div class="tui-row tui-row_sme">
-                    <div class="tui-col_12">
-                        <h3 class="tui-form__header tui-form__header_margin-top_none">Sign in into Oaks</h3>
-                        <div class="tui-form__row tui-form__row_multi-fields">
-                            <div class="tui-form__multi-field">
-                                <tui-input tuiTextfieldExampleText="Enter your email address" formControlName="email"
-                                    tuiHintContent="This should be a valid email address">
-                                    Email address
-                                    <span class="tui-required"></span>
-                                </tui-input>
-                                <tui-error formControlName="email" [error]="[] | tuiFieldError | async"></tui-error>
-                            </div>
-                        </div>
-                        <div class="tui-form__row tui-form__row_multi-fields">
-                            <div class="tui-form__multi-field">
-                                <tui-input-password formControlName="password">
-                                    Password
-                                    <span class="tui-required"></span>
-                                </tui-input-password>
-                                <tui-error formControlName="password" [error]="[] | tuiFieldError | async"></tui-error>
-                            </div>
-                        </div>
-                        <div class="tui-form__buttons">
-                            <button tuiButton size="l" type="submit" class="tui-form__button">
-                                Sign In
-                            </button>
-                            <button tuiButton size="l" type="button" class="tui-form__button" appearance="accent"
-                                icon="tuiIconCommentLarge">
-                                Sign In with Google
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </form>            
+            <oak-sign-in-form (submitForm)="onSignInViaEmail($event)"></oak-sign-in-form>      
           </div>
         <!-- <a [routerLink]="['/sign-up']">Visit sign up</a> -->
       </div>
     </div>
-  
-    <!-- <p>sign-in works!</p>
-    <button (click)="onSignInViaEmail()">Sign in oooo</button>
-    <a [routerLink]="['/sign-up']">Visit sign up</a> -->
-    
-    <!-- <p>{{ isLoading$ | async }}</p>
-    <p>{{ error$ | async | json }}</p>
-    <p>{{ allState$ | async | json }}</p> -->
 </div>
