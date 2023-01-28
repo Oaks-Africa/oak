@@ -5,4 +5,11 @@
         height: 100vh;
         justify-content: center;
     }
+    @media only screen and (max-width: 768px) {
+        /* For mobile phones: */
+        .tui-col_md-6 {
+            width: 100%;
+        }
+    }
+
 }
