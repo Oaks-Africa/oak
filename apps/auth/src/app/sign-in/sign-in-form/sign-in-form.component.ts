@@ -20,7 +20,7 @@ import {
   ReactiveFormsModule, 
   Validators 
 } from '@angular/forms';
-import { SignInViaGoogleComponent } from '../../components/sign-in-via-google/sign-in-via-google.component';
+import { SignXViaGoogleComponent } from '../../components/sign-x-via-google/sign-x-via-google.component';
 
 interface SignInForm {
   email: FormControl<string>
@@ -40,7 +40,7 @@ interface SignInForm {
     TuiInputPasswordModule,
     TuiButtonModule,
     TuiHintModule,
-    SignInViaGoogleComponent
+    SignXViaGoogleComponent
   ],
   templateUrl: './sign-in-form.component.html',
   styleUrls: ['./sign-in-form.component.scss'],

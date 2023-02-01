@@ -20,7 +20,7 @@ import {
   TuiInputPasswordModule,
 } from '@taiga-ui/kit';
 import { TuiButtonModule, TuiErrorModule, TuiHintModule } from '@taiga-ui/core';
-import { SignUpViaGoogleComponent } from '../../components/sign-up-via-google/sign-up-via-google.component';
+import { SignXViaGoogleComponent } from '../../components/sign-x-via-google/sign-x-via-google.component';
 
 interface NameForm {
   first: FormControl<string>;
@@ -46,7 +46,7 @@ interface SignUpForm {
     TuiInputPasswordModule,
     TuiButtonModule,
     TuiHintModule,
-    SignUpViaGoogleComponent
+    SignXViaGoogleComponent
   ],
   standalone: true,
   selector: 'oaks-sign-up-form',
@@ -56,7 +56,7 @@ interface SignUpForm {
 })
 export class SignUpFormComponent implements OnInit {
   @Output() submitForm = new EventEmitter<any>();
-
+  up = "Up"
   form!: FormGroup;
 
   constructor() {
