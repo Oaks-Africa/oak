@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLinkWithHref } from '@angular/router';
+import { RouterLink } from '@angular/router';
 
 import { Observable } from 'rxjs';
 import { TuiIslandModule } from '@taiga-ui/kit';
@@ -16,7 +16,7 @@ import { SignUpFormComponent } from './sign-up-form/sign-up-form.component';
   imports: [
     CommonModule,
     TuiIslandModule,
-    RouterLinkWithHref,
+    RouterLink,
     SignUpFormComponent,
   ],
   templateUrl: './sign-up.component.html',
