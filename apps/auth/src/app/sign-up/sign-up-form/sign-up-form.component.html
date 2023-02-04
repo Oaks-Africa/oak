@@ -2,8 +2,8 @@
     <div class="tui-row tui-row_sme">
         <div class="tui-col_12">
             <h3 class="tui-form__header tui-form__header_margin-top_none">Sign up to join Oaks</h3>
-            <div class="tui-form__row tui-form__row_multi-fields">
-                <ng-container formGroupName="name">
+            <ng-container formGroupName="name">
+                <div class="tui-form__row tui-form__row_multi-fields">
                     <div class="tui-form__multi-field">
                         <tui-input tuiTextfieldExampleText="Enter your first name" formControlName="first">
                             First Name
@@ -18,14 +18,16 @@
                         </tui-input>
                         <tui-error formControlName="last" [error]="[] | tuiFieldError | async"></tui-error>
                     </div>
+                </div>
+                <div class="tui-form__row tui-form__row_multi-fields">
                     <div class="tui-form__multi-field">
                         <tui-input tuiTextfieldExampleText="Enter your other name" formControlName="other">
                             Other Names
                         </tui-input>
                         <tui-error formControlName="other" [error]="[] | tuiFieldError | async"></tui-error>
                     </div>
+                </div>
                 </ng-container>
-            </div>
             <div class="tui-form__row tui-form__row_multi-fields">
                 <div class="tui-form__multi-field">
                     <tui-input tuiTextfieldExampleText="Enter your email address" formControlName="email"
