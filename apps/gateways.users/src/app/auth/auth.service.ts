@@ -24,6 +24,7 @@ import { ValidateUserDto } from './dto/validate-user.dto';
 import { FindByEmailAndPasswordDto } from '../../../../services.users/src/app/users/dto/find-by-email-and-password.dto';
 import { SignedUpViaEmailOutput } from './dto/signed-up-via-email.output';
 import { UserOutput } from './dto/user.output';
+import { ValidateGoogleUserDto } from "./dto/validate-google-user.dto";
 
 @Injectable()
 export class AuthService implements OnModuleInit {
@@ -83,6 +84,14 @@ export class AuthService implements OnModuleInit {
   }
 
   async validateUser(validateUserDto: ValidateUserDto) {
+    return {
+      id: 'kdkd',
+      email: 'dkdjfd',
+      viaGoogle: true,
+    };
+  }
+
+  async validateGoogleUser(validateGoogleUserDto: ValidateGoogleUserDto) {
     return {
       id: 'kdkd',
       email: 'dkdjfd',

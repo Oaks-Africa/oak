@@ -17,9 +17,17 @@ export const environment = {
       )}`,
     },
   },
+  google: {
+    client: {
+      id: process.env.GOOGLE_CLIENT_ID,
+      secret: process.env.GOOGLE_CLIENT_SECRET,
+    },
+    redirectUrl: process.env.GOOGLE_REDIRECT_URL,
+  },
   jwt: {
     secret: process.env.GATEWAYS_USERS_JWT_SECRET,
-    ignoreExpiration: process.env.GATEWAYS_USERS_JWT_IGNORE_EXPIRATION === 'true',
+    ignoreExpiration:
+      process.env.GATEWAYS_USERS_JWT_IGNORE_EXPIRATION === 'true',
     signOptions: {
       expiresIn: process.env.GATEWAYS_USERS_JWT_SIGN_OPTIONS_EXPIRES_IN,
     },
