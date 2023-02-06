@@ -66,6 +66,7 @@
     ]
   },
   "dependencies": {
+    "@abacritt/angularx-social-login": "^1.2.5",
     "@angular/animations": "15.1.3",
     "@angular/common": "15.1.3",
     "@angular/compiler": "15.1.3",

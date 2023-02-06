@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import {
-  Output,
-  EventEmitter,
   ChangeDetectionStrategy,
   Component,
+  EventEmitter,
   OnInit,
+  Output,
 } from '@angular/core';
 import {
   FormControl,
@@ -20,6 +20,8 @@ import {
   TuiInputPasswordModule,
 } from '@taiga-ui/kit';
 import { TuiButtonModule, TuiErrorModule, TuiHintModule } from '@taiga-ui/core';
+
+import { GoogleAuthButtonComponent } from '../../@common/components/google-auth-button/google-auth-button.component';
 
 interface NameForm {
   first: FormControl<string>;
@@ -45,6 +47,7 @@ interface SignUpForm {
     TuiInputPasswordModule,
     TuiButtonModule,
     TuiHintModule,
+    GoogleAuthButtonComponent,
   ],
   standalone: true,
   selector: 'oaks-sign-up-form',
