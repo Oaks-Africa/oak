@@ -1,0 +1,32 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="tui-row tui-row_sme">
+        <div class="tui-col_12">
+            <h3 class="tui-form__header tui-form__header_margin-top_none">Sign in into Oaks</h3>
+            <div class="tui-form__row tui-form__row_multi-fields">
+                <div class="tui-form__multi-field">
+                    <tui-input tuiTextfieldExampleText="Enter your email address" formControlName="email"
+                        tuiHintContent="This should be a valid email address">
+                        Email address
+                        <span class="tui-required"></span>
+                    </tui-input>
+                    <tui-error formControlName="email" [error]="[] | tuiFieldError | async"></tui-error>
+                </div>
+            </div>
+            <div class="tui-form__row tui-form__row_multi-fields">
+                <div class="tui-form__multi-field">
+                    <tui-input-password formControlName="password">
+                        Password
+                        <span class="tui-required"></span>
+                    </tui-input-password>
+                    <tui-error formControlName="password" [error]="[] | tuiFieldError | async"></tui-error>
+                </div>
+            </div>
+            <div class="tui-form__buttons">
+                <button tuiButton size="l" type="submit" class="tui-form__button">
+                    Sign In
+                </button>
+                <oak-google-auth-button/>
+            </div>
+        </div>
+    </div>
+</form>      

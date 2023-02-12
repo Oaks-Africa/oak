@@ -1,62 +1,95 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <div class="tui-row tui-row_sme">
-        <div class="tui-col_12">
-            <h3 class="tui-form__header tui-form__header_margin-top_none">Sign up to join Oaks</h3>
-            <ng-container formGroupName="name">
-                <div class="tui-form__row tui-form__row_multi-fields">
-                    <div class="tui-form__multi-field">
-                        <tui-input tuiTextfieldExampleText="Enter your first name" formControlName="first">
-                            First Name
-                            <span class="tui-required"></span>
-                        </tui-input>
-                        <tui-error formControlName="first" [error]="[] | tuiFieldError | async"></tui-error>
-                    </div>
-                    <div class="tui-form__multi-field">
-                        <tui-input tuiTextfieldExampleText="Enter your last name" formControlName="last">
-                            Last Name
-                            <span class="tui-required"></span>
-                        </tui-input>
-                        <tui-error formControlName="last" [error]="[] | tuiFieldError | async"></tui-error>
-                    </div>
-                </div>
-                <div class="tui-form__row tui-form__row_multi-fields">
-                    <div class="tui-form__multi-field">
-                        <tui-input tuiTextfieldExampleText="Enter your other name" formControlName="other">
-                            Other Names
-                        </tui-input>
-                        <tui-error formControlName="other" [error]="[] | tuiFieldError | async"></tui-error>
-                    </div>
-                </div>
-                </ng-container>
-            <div class="tui-form__row tui-form__row_multi-fields">
-                <div class="tui-form__multi-field">
-                    <tui-input tuiTextfieldExampleText="Enter your email address" formControlName="email"
-                        tuiHintContent="This should be a valid email address">
-                        Email address
-                        <span class="tui-required"></span>
-                    </tui-input>
-                    <tui-error formControlName="email" [error]="[] | tuiFieldError | async"></tui-error>
-                </div>
-            </div>
-            <div class="tui-form__row tui-form__row_multi-fields">
-                <div class="tui-form__multi-field">
-                    <tui-input-password formControlName="password">Password</tui-input-password>
-                    <tui-error formControlName="password" [error]="[] | tuiFieldError | async"></tui-error>
-                </div>
-                <div class="tui-form__multi-field">
-                    <tui-input-password formControlName="confirm">Confirm password</tui-input-password>
-                    <tui-error formControlName="confirm" [error]="[] | tuiFieldError | async"></tui-error>
-                </div>
-            </div>
-            <div class="tui-form__buttons">
-                <button tuiButton size="l" type="submit" class="tui-form__button">
-                    Sign Up
-                </button>
-                <button tuiButton size="l" type="button" class="tui-form__button" appearance="accent"
-                    icon="tuiIconCommentLarge">
-                    Sign Up with Google
-                </button>
-            </div>
+  <div class="tui-row tui-row_sme">
+    <div class="tui-col_12">
+      <h3 class="tui-form__header tui-form__header_margin-top_none">
+        Sign up to join Oaks
+      </h3>
+      <ng-container formGroupName="name">
+        <div class="tui-form__row tui-form__row_multi-fields">
+          <div class="tui-form__multi-field">
+            <tui-input
+              tuiTextfieldExampleText="Enter your first name"
+              formControlName="first"
+            >
+              First Name
+              <span class="tui-required"></span>
+            </tui-input>
+            <tui-error
+              formControlName="first"
+              [error]="[] | tuiFieldError | async"
+            ></tui-error>
+          </div>
+          <div class="tui-form__multi-field">
+            <tui-input
+              tuiTextfieldExampleText="Enter your last name"
+              formControlName="last"
+            >
+              Last Name
+              <span class="tui-required"></span>
+            </tui-input>
+            <tui-error
+              formControlName="last"
+              [error]="[] | tuiFieldError | async"
+            ></tui-error>
+          </div>
         </div>
+        <div class="tui-form__row tui-form__row_multi-fields">
+          <div class="tui-form__multi-field">
+            <tui-input
+              tuiTextfieldExampleText="Enter your other name"
+              formControlName="other"
+            >
+              Other Names
+            </tui-input>
+            <tui-error
+              formControlName="other"
+              [error]="[] | tuiFieldError | async"
+            ></tui-error>
+          </div>
+        </div>
+      </ng-container>
+      <div class="tui-form__row tui-form__row_multi-fields">
+        <div class="tui-form__multi-field">
+          <tui-input
+            tuiTextfieldExampleText="Enter your email address"
+            formControlName="email"
+            tuiHintContent="This should be a valid email address"
+          >
+            Email address
+            <span class="tui-required"></span>
+          </tui-input>
+          <tui-error
+            formControlName="email"
+            [error]="[] | tuiFieldError | async"
+          ></tui-error>
+        </div>
+      </div>
+      <div class="tui-form__row tui-form__row_multi-fields">
+        <div class="tui-form__multi-field">
+          <tui-input-password formControlName="password"
+            >Password</tui-input-password
+          >
+          <tui-error
+            formControlName="password"
+            [error]="[] | tuiFieldError | async"
+          ></tui-error>
+        </div>
+        <div class="tui-form__multi-field">
+          <tui-input-password formControlName="confirm"
+            >Confirm password</tui-input-password
+          >
+          <tui-error
+            formControlName="confirm"
+            [error]="[] | tuiFieldError | async"
+          ></tui-error>
+        </div>
+      </div>
+      <div class="tui-form__buttons">
+        <button tuiButton size="l" type="submit" class="tui-form__button">
+          Sign Up
+        </button>
+        <oak-google-auth-button action="up" />
+      </div>
     </div>
+  </div>
 </form>
