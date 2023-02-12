@@ -19,6 +19,7 @@ import { TuiButtonModule } from '@taiga-ui/core';
   standalone: true,
   imports: [CommonModule, SocialLoginModule, TuiButtonModule],
   providers: [
+    SocialAuthService,
     {
       provide: 'SocialAuthServiceConfig',
       useValue: {
