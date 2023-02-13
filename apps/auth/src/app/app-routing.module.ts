@@ -25,10 +25,10 @@ const routes: Routes = [
       ),
   },
   {
-    path: 'forget-password',
+    path: 'forgot-password',
     loadComponent: () =>
-      import('./forget-password/forget-password.component').then(
-        (m) => m.ForgetPasswordComponent
+      import('./forgot-password/forgot-password.component').then(
+        (m) => m.ForgotPasswordComponent
       ),
   },
 ];

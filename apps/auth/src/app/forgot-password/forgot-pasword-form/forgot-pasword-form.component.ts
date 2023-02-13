@@ -22,13 +22,13 @@ import {
 import { TuiButtonModule, TuiErrorModule, TuiHintModule } from '@taiga-ui/core';
 
 
-interface ForgetPasswordForm {
+interface ForgotPasswordForm {
   password: FormControl<string>;
   confirm: FormControl<string>;
 }
 
 @Component({
-  selector: 'oak-forget-pasword-form',
+  selector: 'oak-forgot-pasword-form',
   standalone: true,
   imports: [
     CommonModule,
@@ -41,17 +41,17 @@ interface ForgetPasswordForm {
     TuiButtonModule,
     TuiHintModule,
   ],
-  templateUrl: './forget-pasword-form.component.html',
-  styleUrls: ['./forget-pasword-form.component.scss'],
+  templateUrl: './forgot-pasword-form.component.html',
+  styleUrls: ['./forgot-pasword-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ForgetPaswordFormComponent implements OnInit {
+export class ForgotPaswordFormComponent implements OnInit {
   @Output() submitForm = new EventEmitter<any>();
 
   form!: FormGroup;
 
   constructor() {
-    this.form = new FormGroup<ForgetPasswordForm> ({
+    this.form = new FormGroup<ForgotPasswordForm> ({
       password: new FormControl('', {
         nonNullable: true,
         validators: [

@@ -5,21 +5,21 @@ import { AuthState, AuthQuery, AuthService } from '@oak/auth/data-access';
 import { TuiAlertService } from '@taiga-ui/core';
 import { TuiIslandModule } from '@taiga-ui/kit';
 import { Observable } from 'rxjs';
-import { ForgetPaswordFormComponent } from './forget-pasword-form/forget-pasword-form.component';
+import { ForgotPaswordFormComponent } from './forgot-pasword-form/forgot-pasword-form.component';
 
 @Component({
-  selector: 'oak-forget-password',
+  selector: 'oak-forgot-password',
   standalone: true,
   imports: [
     CommonModule,
     TuiIslandModule,
     RouterLinkWithHref,
-    ForgetPaswordFormComponent
+    ForgotPaswordFormComponent
   ],
-  templateUrl: './forget-password.component.html',
-  styleUrls: ['./forget-password.component.scss']
+  templateUrl: './forgot-password.component.html',
+  styleUrls: ['./forgot-password.component.scss']
 })
-export class ForgetPasswordComponent implements OnInit {
+export class ForgotPasswordComponent implements OnInit {
   isLoading$!: Observable<boolean>;
   error$!: Observable<any>;
   allState$!: Observable<AuthState>;
@@ -38,7 +38,7 @@ export class ForgetPasswordComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onForgetPasswordFormSubmit(data: any) {
+  onForgotPasswordFormSubmit(data: any) {
     console.log('FORGET PASSWORD PAGE COMPONENT', data);
   }
 }
