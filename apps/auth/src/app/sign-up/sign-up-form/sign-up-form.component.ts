@@ -50,7 +50,7 @@ interface SignUpForm {
     GoogleAuthButtonComponent,
   ],
   standalone: true,
-  selector: 'oaks-sign-up-form',
+  selector: 'oak-sign-up-form',
   templateUrl: './sign-up-form.component.html',
   styleUrls: ['./sign-up-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
