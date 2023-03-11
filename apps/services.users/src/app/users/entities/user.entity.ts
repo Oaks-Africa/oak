@@ -18,8 +18,11 @@ export class User extends BaseEntity {
   @Unique()
   email!: string;
 
-  @Property()
-  viaGoogle!: boolean;
+  @Property({ nullable: true })
+  providerId?: string;
+
+  @Property({ nullable: true })
+  provider?: string;
 
   @Property({ nullable: true })
   @Exclude()

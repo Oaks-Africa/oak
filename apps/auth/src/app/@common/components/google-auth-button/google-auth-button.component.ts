@@ -28,7 +28,7 @@ import { TuiButtonModule } from '@taiga-ui/core';
           {
             id: GoogleLoginProvider.PROVIDER_ID,
             provider: new GoogleLoginProvider(
-              '701577720497-6kdmmja8g25303mb15q691p8890avi5q.apps.googleusercontent.com'
+              '701577720497-6kdmmja8g25303mb15q691p8890avi5q.apps.googleusercontent.com',
             ),
           },
         ],

@@ -3,7 +3,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { GqlExecutionContext } from '@nestjs/graphql';
 
 @Injectable()
-export class LoginWithCredentialsGuard extends AuthGuard('local') {
+export class LoginWithCredentialsGuard extends AuthGuard('ccc') {
   constructor(private readonly variableName: string) {
     super();
   }

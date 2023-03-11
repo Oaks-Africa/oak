@@ -1,5 +1,4 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 
 import { Profile, Strategy } from 'passport-google-oauth20';
@@ -11,12 +10,14 @@ import { environment } from '../../../environments/environment';
 export class GoogleOauthStrategy extends PassportStrategy(Strategy, 'google') {
   private readonly logger: Logger;
 
-  constructor(config: ConfigService, private readonly auth: AuthService) {
+  constructor(private readonly auth: AuthService) {
+    console.log('FORKEN STRATEGEY')
     super({
       clientID: environment.google.client.id,
       clientSecret: environment.google.client.secret,
       callbackURL: environment.google.redirectUrl,
       scope: ['email', 'profile'],
+
     });
 
     this.logger = new Logger(GoogleOauthStrategy.name);

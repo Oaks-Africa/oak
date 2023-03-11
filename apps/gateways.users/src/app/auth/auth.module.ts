@@ -19,7 +19,6 @@ import { GoogleOauthStrategy } from './strategies/google-oauth.strategy';
     LocalStrategy,
     LocalSerializer,
     GoogleAuthGuard,
-    GoogleOauthStrategy,
   ],
   controllers: [AuthController],
 })

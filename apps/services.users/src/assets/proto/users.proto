@@ -24,8 +24,9 @@ message Name {
 message CreateUserReq {
   string email = 1;
   string password = 2;
-  bool viaGoogle = 3;
-  Name name = 4;
+  string provider = 3;
+  string providerId = 4;
+  Name name = 5;
 }
 
 message Profile {
