@@ -16,9 +16,9 @@ import { UserOutput } from './dto/user.output';
 import { AuthService, Fd } from './auth.service';
 
 import { GqlCookieAuthGuard } from '../@common/guards/gql-cookie-auth.guard';
-import { LoginWithCredentialsGuard } from '../@common/guards/login-with-credentials.guard';
+import { LoginWithCredentialsGuard } from './guards/login-with-credentials.guard';
 import { GoogleAuthInput } from "./dto/google-auth.input";
-import { GoogleAuthGuard } from "./guards/google-auth.guard";
+import { LoginWithGoogleGuard } from "./guards/login-with-google.guard";
 import { GoogleAuthOutput } from "./dto/google-auth.output";
 
 @Resolver(() => Auth)
@@ -49,7 +49,7 @@ export class AuthResolver {
   }
 
   @Mutation(() => GoogleAuthOutput, { name: 'googleAuth' })
-  @UseGuards(new GoogleAuthGuard())
+  @UseGuards(new LoginWithGoogleGuard('googleAuthInput'))
   googleAuth(
     @Args('googleAuthInput') googleAuthInput: GoogleAuthInput,
     @CurrentUser() user: UserOutput

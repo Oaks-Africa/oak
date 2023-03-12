@@ -14,7 +14,4 @@ export class SignInViaEmailInput {
   @IsNotEmpty()
   @IsString()
   readonly password: string;
-
-  @Field({ description: 'Password to sign in with' })
-  readonly token: string;
 }

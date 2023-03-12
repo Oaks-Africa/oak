@@ -6,30 +6,31 @@ import {
   Logger,
   NotFoundException,
 } from '@nestjs/common';
+import { ClientKafka } from '@nestjs/microservices';
 
+import { lastValueFrom } from 'rxjs';
 import { InjectTemporalClient } from 'nestjs-temporal';
+import { MikroORM, UseRequestContext, wrap } from '@mikro-orm/core';
 import { WorkflowClient } from '@temporalio/client';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/mongodb';
-import { MikroORM, UseRequestContext, wrap } from '@mikro-orm/core';
 
 import { environment } from '../../environments/environment';
 
 import {
   FoundUserByEmailAndPassword,
+  FoundUserByEmailAndProvider,
   UserCreated,
-} from '../../assets/proto/users';
+} from '../../assets/proto/users.pb';
 
 import { User } from './entities/user.entity';
 
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { FindByEmailDto } from './dto/find-by-email.dto';
 import { FindByEmailAndPasswordDto } from './dto/find-by-email-and-password.dto';
 
 import { TokenGenerationService } from '../@common/services/token-generation.service';
-import { ClientKafka } from '@nestjs/microservices';
-import { lastValueFrom } from 'rxjs';
+import { FindByEmailAndProviderDto } from './dto/find-by-email-and-provider.dto';
 
 @Injectable()
 export class UsersService {
@@ -51,8 +52,12 @@ export class UsersService {
     try {
       const user = this.usersRepository.create({
         ...createUserDto,
+        lastSignIn: createUserDto.providerId ? new Date() : null,
         profile: {
           name: createUserDto.name,
+          avatar:
+            createUserDto.avatar ??
+            `https://ui-avatars.com/api/?name=${createUserDto.name.first}+${createUserDto.name.last}`,
         },
       });
       await this.usersRepository.persistAndFlush(user);
@@ -63,6 +68,7 @@ export class UsersService {
         requestData: createUserDto,
         ...user,
         id: user.id,
+        lastSignIn: user.lastSignIn?.toISOString(),
         createdAt: user.createdAt.toISOString(),
         updatedAt: user.updatedAt.toISOString(),
       } as UserCreated;
@@ -118,20 +124,42 @@ export class UsersService {
     }
   }
 
-  findAll() {
-    return `This action returns all users`;
-  }
+  @UseRequestContext()
+  async findByEmailAndProvider({
+    email,
+    provider,
+    providerId,
+  }: FindByEmailAndProviderDto) {
+    try {
+      const user = await this.usersRepository.findOneOrFail({
+        email,
+        provider,
+        providerId,
+      });
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
-  }
+      wrap(user).assign({
+        lastSignIn: new Date(),
+      });
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
-  }
+      await this.usersRepository.flush();
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+      return {
+        requestData: { email, provider, providerId },
+        ...user,
+        id: user.id,
+        lastSignIn: user.lastSignIn?.toISOString(),
+        createdAt: user.createdAt.toISOString(),
+        updatedAt: user.updatedAt.toISOString(),
+      } as FoundUserByEmailAndProvider;
+    } catch (e) {
+      this.logger.error('EXCEPTION CAUGHT: ', e);
+
+      if (e instanceof HttpException) {
+        throw e;
+      }
+
+      throw new BadRequestException('failed to retrieve user');
+    }
   }
 
   async initiateUserCreatedWorkflow(data: User) {

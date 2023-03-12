@@ -1,7 +1,9 @@
 import {
   IsEmail,
   IsNotEmpty,
+  IsOptional,
   IsString,
+  IsUrl,
   Matches,
   MinLength,
   ValidateIf,
@@ -38,6 +40,11 @@ export class CreateUserDto {
   @IsNotEmpty()
   @IsString()
   readonly providerId?: string;
+
+  @IsOptional()
+  @IsString()
+  @IsUrl()
+  readonly avatar?: string;
 
   @ValidateNested()
   @IsNotEmpty()

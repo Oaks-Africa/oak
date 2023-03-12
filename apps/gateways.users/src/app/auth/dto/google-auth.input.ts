@@ -4,8 +4,8 @@ import { IsNotEmpty, IsString } from "class-validator";
 
 @InputType()
 export class GoogleAuthInput {
-  @Field({ description: "Email address to create account with" })
+  @Field({ description: "ID Token from google authentication provider" })
   @IsNotEmpty()
   @IsString()
-  readonly token: string;
+  readonly idToken: string;
 }

@@ -7,6 +7,8 @@ service UsersService {
 
   rpc CreateUser(CreateUserReq) returns (CreateUserRes) {}
   rpc FindByEmailAndPassword(FindByEmailAndPasswordReq) returns (FindByEmailAndPasswordRes) {}
+  rpc FindByEmailAndProvider(FindByEmailAndProviderReq) returns (FindByEmailAndProviderRes) {}
+  rpc FindByEmail(FindByEmailReq) returns (FindByEmailRes) {}
 }
 
 message HealthReq {}
@@ -23,10 +25,11 @@ message Name {
 
 message CreateUserReq {
   string email = 1;
-  string password = 2;
-  string provider = 3;
-  string providerId = 4;
+  optional string password = 2;
+  optional string provider = 3;
+  optional string providerId = 4;
   Name name = 5;
+  optional string avatar = 6;
 }
 
 message Profile {
@@ -37,10 +40,12 @@ message UserCreated {
   CreateUserReq requestData = 1;
   string id = 2;
   string email = 3;
-  bool viaGoogle = 4;
-  Profile profile = 5;
-  string createdAt = 6;
-  string updatedAt = 7;
+  optional string provider = 4;
+  optional string providerId = 5;
+  Profile profile = 6;
+  string lastSignIn =7;
+  string createdAt = 8;
+  string updatedAt = 9;
 }
 
 message CreateUserRes {
@@ -60,17 +65,68 @@ message FoundUserByEmailAndPassword {
   FindByEmailAndPasswordReq requestData = 1;
   string id = 2;
   string email = 3;
-  bool viaGoogle = 4;
-  string lastSignIn = 5;
-  Profile profile = 6;
-  string createdAt = 7;
-  string updatedAt = 8;
+  optional string provider = 4;
+  optional string providerId = 5;
+  string lastSignIn = 6;
+  Profile profile = 7;
+  string createdAt = 8;
+  string updatedAt = 9;
 }
 
 message FindByEmailAndPasswordRes {
   bool success = 1;
   int32 status = 2;
   FoundUserByEmailAndPassword data = 3;
+  string message = 4;
+  string error = 5;
+}
+
+message FindByEmailAndProviderReq {
+  string email = 1;
+  string provider = 2;
+  string providerId = 3;
+}
+
+message FoundUserByEmailAndProvider {
+  FindByEmailAndProviderReq requestData = 1;
+  string id = 2;
+  string email = 3;
+  optional string provider = 4;
+  optional string providerId = 5;
+  string lastSignIn = 6;
+  Profile profile = 7;
+  string createdAt = 8;
+  string updatedAt = 9;
+}
+
+message FindByEmailAndProviderRes {
+  bool success = 1;
+  int32 status = 2;
+  FoundUserByEmailAndProvider data = 3;
+  string message = 4;
+  string error = 5;
+}
+
+message FindByEmailReq {
+  string email = 1;
+}
+
+message FoundUserByEmail {
+  FindByEmailReq requestData = 1;
+  string id = 2;
+  string email = 3;
+  optional string provider = 4;
+  optional string providerId = 5;
+  string lastSignIn = 6;
+  Profile profile = 7;
+  string createdAt = 8;
+  string updatedAt = 9;
+}
+
+message FindByEmailRes {
+  bool success = 1;
+  int32 status = 2;
+  FoundUserByEmail data = 3;
   string message = 4;
   string error = 5;
 }

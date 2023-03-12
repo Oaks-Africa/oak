@@ -5,26 +5,28 @@ import {
   Injectable,
   Logger,
   OnModuleInit,
-  UnauthorizedException
-} from "@nestjs/common";
-import { ClientGrpc } from "@nestjs/microservices";
-import { Field, ID, ObjectType } from "@nestjs/graphql";
+  UnauthorizedException,
+} from '@nestjs/common';
+import { ClientGrpc } from '@nestjs/microservices';
+import { Field, ID, ObjectType } from '@nestjs/graphql';
 
-import { lastValueFrom, map } from "rxjs";
-import { google } from "googleapis";
+import { lastValueFrom, map } from 'rxjs';
+import { google } from 'googleapis';
 
-
-import { USERS_SERVICE_NAME, UsersServiceClient } from "../../../../services.users/src/assets/proto/users";
-
-import { CreateAuthInput } from "./dto/create-auth.input";
-import { UpdateAuthInput } from "./dto/update-auth.input";
-import { SignUpViaEmailInput } from "./dto/sign-up-via-email.input";
-import { ValidateUserDto } from "./dto/validate-user.dto";
-import { FindByEmailAndPasswordDto } from "../../../../services.users/src/app/users/dto/find-by-email-and-password.dto";
-import { SignedUpViaEmailOutput } from "./dto/signed-up-via-email.output";
-import { UserOutput } from "./dto/user.output";
-import { ValidateGoogleUserDto } from "./dto/validate-google-user.dto";
-import { GoogleIdTokenDto } from "./dto/google-id-token.dto";
+import { CreateAuthInput } from './dto/create-auth.input';
+import { UpdateAuthInput } from './dto/update-auth.input';
+import { SignUpViaEmailInput } from './dto/sign-up-via-email.input';
+import { ValidateUserDto } from './dto/validate-user.dto';
+import { FindByEmailAndPasswordDto } from '../../../../services.users/src/app/users/dto/find-by-email-and-password.dto';
+import { SignedUpViaEmailOutput } from './dto/signed-up-via-email.output';
+import { UserOutput } from './dto/user.output';
+import { ValidateGoogleUserDto } from './dto/validate-google-user.dto';
+import { ProviderTokenDto } from './dto/provider-token.dto';
+import {
+  USERS_SERVICE_NAME,
+  UsersServiceClient,
+} from '@oak/services.users/proto';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class AuthService implements OnModuleInit {
@@ -52,7 +54,6 @@ export class AuthService implements OnModuleInit {
         this.usersClient
           .createUser({
             ...signUpViaEmailInput,
-            viaGoogle: false
           })
           .pipe(
             map((data) => {
@@ -68,12 +69,13 @@ export class AuthService implements OnModuleInit {
       return {
         user: {
           ...res,
+          lastSignIn: res.lastSignIn ? new Date(res.lastSignIn) : null,
           createdAt: new Date(res.createdAt),
-          updatedAt: new Date(res.updatedAt)
-        }
+          updatedAt: new Date(res.updatedAt),
+        },
       };
     } catch (e) {
-      this.logger.error("EXCEPTION CAUGHT: ", e);
+      this.logger.error('EXCEPTION CAUGHT: ', e);
 
       if (e instanceof HttpException) {
         throw e;
@@ -85,22 +87,22 @@ export class AuthService implements OnModuleInit {
 
   async validateUser(validateUserDto: ValidateUserDto) {
     return {
-      id: "kdkd",
-      email: "dkdjfd",
-      viaGoogle: true
+      id: 'kdkd',
+      email: 'dkdjfd',
+      viaGoogle: true,
     };
   }
 
   async validateGoogleUser(validateGoogleUserDto: ValidateGoogleUserDto) {
     return {
-      id: "kdkd",
-      email: "dkdjfd",
-      viaGoogle: true
+      id: 'kdkd',
+      email: 'dkdjfd',
+      viaGoogle: true,
     };
   }
 
   create(createAuthInput: CreateAuthInput) {
-    return "This action adds a new auth";
+    return 'This action adds a new auth';
   }
 
   findAll() {
@@ -109,8 +111,8 @@ export class AuthService implements OnModuleInit {
 
   findOne(id: number) {
     return {
-      id: "kdkd",
-      email: "dkdjfd"
+      id: 'kdkd',
+      email: 'dkdjfd',
     } as Fd;
     // return `This action returns a #${id} auth`;
   }
@@ -130,12 +132,12 @@ export class AuthService implements OnModuleInit {
       const res = await lastValueFrom(
         this.usersClient
           .findByEmailAndPassword({
-            ...findByEmailAndPasswordDto
+            ...findByEmailAndPasswordDto,
           })
           .pipe(
             map((data) => {
               if (data.status !== 200) {
-                throw new UnauthorizedException("invalid user credentials");
+                throw new UnauthorizedException('invalid user credentials');
               }
 
               return data.data;
@@ -147,10 +149,10 @@ export class AuthService implements OnModuleInit {
         ...res,
         lastSignIn: new Date(res.lastSignIn),
         createdAt: new Date(res.createdAt),
-        updatedAt: new Date(res.updatedAt)
+        updatedAt: new Date(res.updatedAt),
       };
     } catch (e) {
-      this.logger.error("EXCEPTION CAUGHT: ", e);
+      this.logger.error('EXCEPTION CAUGHT: ', e);
 
       if (e instanceof HttpException) {
         throw e;
@@ -160,30 +162,105 @@ export class AuthService implements OnModuleInit {
     }
   }
 
-  async validateUserViaGoogleIdToken(
-    googleToken: GoogleIdTokenDto
+  async validateUserViaProvider(
+    providerToken: ProviderTokenDto
   ): Promise<UserOutput> {
     try {
-      const dd = new google.auth.OAuth2("", "");
-      const res = await dd.verifyIdToken({ idToken: googleToken.idToken });
-      const googleId = res.getUserId();
-      const data = res.getPayload();
-      const createUserData = {
-        email: data.email,
-        avatar: data.picture,
-        name: {
-          first: data.given_name,
-          last: data.family_name
-        }
-      };
+      // Do Google verification and initializations
+      const googleClient = new google.auth.OAuth2(
+        environment.google.client.id,
+        environment.google.client.secret
+      );
+      const googleVerificationRes = await googleClient.verifyIdToken({
+        idToken: providerToken.idToken,
+      });
+      const providerId = googleVerificationRes.getUserId();
+      const { email } = googleVerificationRes.getPayload();
+
+      // Verify user exists in our service
+      const providerRes = await lastValueFrom(
+        this.usersClient
+          .findByEmailAndProvider({
+            email,
+            providerId,
+            provider: 'GOOGLE',
+          })
+          .pipe(
+            map((data) => {
+              if (data.status !== 200) {
+                return null;
+              }
+
+              return data.data;
+            })
+          )
+      );
+
+      if (providerRes) {
+        return {
+          ...providerRes,
+          lastSignIn: new Date(providerRes.lastSignIn),
+          createdAt: new Date(providerRes.createdAt),
+          updatedAt: new Date(providerRes.updatedAt),
+        };
+      }
+
+      // Verify user email exists in our service
+      const emailRes = await lastValueFrom(
+        this.usersClient
+          .findByEmail({
+            email,
+          })
+          .pipe(
+            map((data) => {
+              if (data.status !== 200) {
+                return null;
+              }
+
+              return data.data;
+            })
+          )
+      );
+
+      if (emailRes) {
+        throw new UnauthorizedException(
+          'unable to sign in with this google account'
+        );
+      }
+
+      const { picture, given_name, family_name } =
+        googleVerificationRes.getPayload();
+
+      const userCreatedRes = await lastValueFrom(
+        this.usersClient
+          .createUser({
+            email,
+            avatar: picture,
+            name: {
+              first: given_name,
+              last: family_name,
+            },
+            providerId,
+            provider: 'GOOGLE',
+          })
+          .pipe(
+            map((data) => {
+              if (data.status !== 200) {
+                throw new BadRequestException(data.message);
+              }
+
+              return data.data;
+            })
+          )
+      );
       return {
-        ...res,
-        lastSignIn: new Date(res.lastSignIn),
-        createdAt: new Date(res.createdAt),
-        updatedAt: new Date(res.updatedAt)
+        ...userCreatedRes,
+        lastSignIn: new Date(userCreatedRes.lastSignIn),
+        createdAt: new Date(userCreatedRes.createdAt),
+        updatedAt: new Date(userCreatedRes.updatedAt),
       };
     } catch (e) {
-      this.logger.error("EXCEPTION CAUGHT: ", e);
+      this.logger.error('EXCEPTION CAUGHT: ', e);
 
       if (e instanceof HttpException) {
         throw e;
