@@ -1,12 +1,9 @@
 import { Inject, Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
 
-import { UserDto } from './dto/user.dto';
+import { USERS_SERVICE_NAME, UsersServiceClient } from "@oak/services.users/proto";
 
-import {
-  USERS_SERVICE_NAME,
-  UsersServiceClient,
-} from '../../../../services.users/src/assets/proto/users';
+import { UserDto } from './dto/user.dto';
 
 @Injectable()
 export class UsersService implements OnModuleInit {

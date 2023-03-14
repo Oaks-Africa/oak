@@ -21,7 +21,8 @@
       ],
       "@oak/shared/data-access/phone-number-verification": [
         "libs/shared/data-access/phone-number-verification/src/index.ts"
-      ]
+      ],
+      "@oak/services.users/proto": ["apps/services.users/src/assets/proto/users.pb.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

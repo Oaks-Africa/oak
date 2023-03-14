@@ -8,8 +8,9 @@ import { AuthResolver } from './auth.resolver';
 import { LocalSerializer } from './serializers/local.serializer';
 import { UsersModule } from '../users/users.module';
 import { AuthController } from './auth.controller';
-import { GoogleAuthGuard } from './guards/google-auth.guard';
+import { LoginWithGoogleGuard } from './guards/login-with-google.guard';
 import { GoogleOauthStrategy } from './strategies/google-oauth.strategy';
+import { LoginWithCredentialsGuard } from "./guards/login-with-credentials.guard";
 
 @Module({
   imports: [UsersModule],
@@ -17,9 +18,10 @@ import { GoogleOauthStrategy } from './strategies/google-oauth.strategy';
     AuthResolver,
     AuthService,
     LocalStrategy,
-    LocalSerializer,
-    GoogleAuthGuard,
     GoogleOauthStrategy,
+    LocalSerializer,
+    LoginWithCredentialsGuard,
+    LoginWithGoogleGuard,
   ],
   controllers: [AuthController],
 })

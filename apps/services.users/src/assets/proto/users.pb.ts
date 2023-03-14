@@ -19,9 +19,11 @@ export interface Name {
 
 export interface CreateUserReq {
   email: string;
-  password: string;
-  viaGoogle: boolean;
+  password?: string | undefined;
+  provider?: string | undefined;
+  providerId?: string | undefined;
   name: Name | undefined;
+  avatar?: string | undefined;
 }
 
 export interface Profile {
@@ -32,8 +34,10 @@ export interface UserCreated {
   requestData: CreateUserReq | undefined;
   id: string;
   email: string;
-  viaGoogle: boolean;
+  provider?: string | undefined;
+  providerId?: string | undefined;
   profile: Profile | undefined;
+  lastSignIn: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -55,7 +59,8 @@ export interface FoundUserByEmailAndPassword {
   requestData: FindByEmailAndPasswordReq | undefined;
   id: string;
   email: string;
-  viaGoogle: boolean;
+  provider?: string | undefined;
+  providerId?: string | undefined;
   lastSignIn: string;
   profile: Profile | undefined;
   createdAt: string;
@@ -70,6 +75,56 @@ export interface FindByEmailAndPasswordRes {
   error: string;
 }
 
+export interface FindByEmailAndProviderReq {
+  email: string;
+  provider: string;
+  providerId: string;
+}
+
+export interface FoundUserByEmailAndProvider {
+  requestData: FindByEmailAndProviderReq | undefined;
+  id: string;
+  email: string;
+  provider?: string | undefined;
+  providerId?: string | undefined;
+  lastSignIn: string;
+  profile: Profile | undefined;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface FindByEmailAndProviderRes {
+  success: boolean;
+  status: number;
+  data: FoundUserByEmailAndProvider | undefined;
+  message: string;
+  error: string;
+}
+
+export interface FindByEmailReq {
+  email: string;
+}
+
+export interface FoundUserByEmail {
+  requestData: FindByEmailReq | undefined;
+  id: string;
+  email: string;
+  provider?: string | undefined;
+  providerId?: string | undefined;
+  lastSignIn: string;
+  profile: Profile | undefined;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface FindByEmailRes {
+  success: boolean;
+  status: number;
+  data: FoundUserByEmail | undefined;
+  message: string;
+  error: string;
+}
+
 export const USERS_PACKAGE_NAME = "users";
 
 export interface UsersServiceClient {
@@ -78,6 +133,10 @@ export interface UsersServiceClient {
   createUser(request: CreateUserReq): Observable<CreateUserRes>;
 
   findByEmailAndPassword(request: FindByEmailAndPasswordReq): Observable<FindByEmailAndPasswordRes>;
+
+  findByEmailAndProvider(request: FindByEmailAndProviderReq): Observable<FindByEmailAndProviderRes>;
+
+  findByEmail(request: FindByEmailReq): Observable<FindByEmailRes>;
 }
 
 export interface UsersServiceController {
@@ -88,11 +147,23 @@ export interface UsersServiceController {
   findByEmailAndPassword(
     request: FindByEmailAndPasswordReq,
   ): Promise<FindByEmailAndPasswordRes> | Observable<FindByEmailAndPasswordRes> | FindByEmailAndPasswordRes;
+
+  findByEmailAndProvider(
+    request: FindByEmailAndProviderReq,
+  ): Promise<FindByEmailAndProviderRes> | Observable<FindByEmailAndProviderRes> | FindByEmailAndProviderRes;
+
+  findByEmail(request: FindByEmailReq): Promise<FindByEmailRes> | Observable<FindByEmailRes> | FindByEmailRes;
 }
 
 export function UsersServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["health", "createUser", "findByEmailAndPassword"];
+    const grpcMethods: string[] = [
+      "health",
+      "createUser",
+      "findByEmailAndPassword",
+      "findByEmailAndProvider",
+      "findByEmail",
+    ];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("UsersService", method)(constructor.prototype[method], method, descriptor);

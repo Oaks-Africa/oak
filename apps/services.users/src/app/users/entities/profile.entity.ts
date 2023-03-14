@@ -1,4 +1,4 @@
-import { Embeddable, Embedded } from '@mikro-orm/core';
+import { Embeddable, Embedded, Property } from '@mikro-orm/core';
 
 import { Name } from './name.entity';
 
@@ -6,4 +6,7 @@ import { Name } from './name.entity';
 export class Profile {
   @Embedded(() => Name)
   name!: Name;
+
+  @Property()
+  avatar!: string;
 }

@@ -1,8 +1,9 @@
 import {
-  IsBoolean,
   IsEmail,
   IsNotEmpty,
+  IsOptional,
   IsString,
+  IsUrl,
   Matches,
   MinLength,
   ValidateIf,
@@ -21,7 +22,7 @@ export class CreateUserDto {
   @IsUniqueEmail()
   readonly email: string;
 
-  @ValidateIf((o) => !o.viaGoogle)
+  @ValidateIf((o) => !o.providerId)
   @IsNotEmpty()
   @IsString()
   @MinLength(8)
@@ -30,9 +31,20 @@ export class CreateUserDto {
   })
   readonly password: string;
 
+  @ValidateIf((o) => !o.password)
   @IsNotEmpty()
-  @IsBoolean()
-  readonly viaGoogle: boolean;
+  @IsString()
+  readonly provider?: string;
+
+  @ValidateIf((o) => !o.password)
+  @IsNotEmpty()
+  @IsString()
+  readonly providerId?: string;
+
+  @IsOptional()
+  @IsString()
+  @IsUrl()
+  readonly avatar?: string;
 
   @ValidateNested()
   @IsNotEmpty()
