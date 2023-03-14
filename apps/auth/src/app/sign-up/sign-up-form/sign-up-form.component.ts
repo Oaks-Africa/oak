@@ -1,5 +1,14 @@
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+
+
+
+
+
+
+
 import {
+
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
@@ -50,7 +59,7 @@ interface SignUpForm {
     GoogleAuthButtonComponent,
   ],
   standalone: true,
-  selector: 'oaks-sign-up-form',
+  selector: 'oak-sign-up-form',
   templateUrl: './sign-up-form.component.html',
   styleUrls: ['./sign-up-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
