@@ -3,7 +3,11 @@ import { Injectable } from '@angular/core';
 import { Apollo, ApolloBase } from 'apollo-angular';
 import { finalize } from 'rxjs/operators';
 
-import { SIGN_IN_VIA_EMAIL, SIGN_UP_VIA_EMAIL } from '../gql/auth.gql';
+import {
+  GOOGLE_AUTH,
+  SIGN_IN_VIA_EMAIL,
+  SIGN_UP_VIA_EMAIL,
+} from '../gql/auth.gql';
 
 import { AuthStore } from './auth.store';
 
@@ -69,6 +73,27 @@ export class AuthService {
         next: ({ data }) =>
           this.authStore.update((state) => ({
             user: (data as any).signUpViaEmail?.user,
+          })),
+        error: (error) => this.authStore.setError(error.message),
+      });
+  }
+
+  googleAuth({ idToken }: { idToken: string }) {
+    this.authStore.setLoading(true);
+    this.apollo
+      .mutate({
+        mutation: GOOGLE_AUTH,
+        variables: {
+          googleAuthInput: {
+            idToken,
+          },
+        },
+      })
+      .pipe(finalize(() => this.authStore.setLoading(false)))
+      .subscribe({
+        next: ({ data }) =>
+          this.authStore.update((state) => ({
+            user: (data as any).googleAuth?.user,
           })),
         error: (error) => this.authStore.setError(error.message),
       });

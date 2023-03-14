@@ -40,3 +40,23 @@ export const SIGN_UP_VIA_EMAIL = gql`
     }
   }
 `;
+
+export const GOOGLE_AUTH = gql`
+  mutation GoogleAuth($googleAuthInput: GoogleAuthInput!) {
+    googleAuth(googleAuthInput: $googleAuthInput) {
+      user {
+        createdAt
+        email
+        id
+        lastSignIn
+        profile {
+          name {
+            first
+            last
+            other
+          }
+        }
+        updatedAt
+      }
+    }
+  }`;
