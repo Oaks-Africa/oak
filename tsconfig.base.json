@@ -16,13 +16,15 @@
     "baseUrl": ".",
     "paths": {
       "@oak/auth/data-access": ["libs/auth/data-access/src/index.ts"],
+      "@oak/services.users/proto": [
+        "apps/services.users/src/assets/proto/users.pb.ts"
+      ],
       "@oak/shared/data-access/arkesel": [
         "libs/shared/data-access/arkesel/src/index.ts"
       ],
       "@oak/shared/data-access/phone-number-verification": [
         "libs/shared/data-access/phone-number-verification/src/index.ts"
-      ],
-      "@oak/services.users/proto": ["apps/services.users/src/assets/proto/users.pb.ts"]
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]
