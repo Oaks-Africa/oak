@@ -24,6 +24,13 @@ const routes: Routes = [
         (m) => m.VerifyEmailComponent
       ),
   },
+  {
+    path: 'forgot-password',
+    loadComponent: () =>
+      import('./forgot-password/forgot-password.component').then(
+        (m) => m.ForgotPasswordComponent
+      ),
+  },
 ];
 
 @NgModule({
